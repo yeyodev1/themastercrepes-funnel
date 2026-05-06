@@ -1,8 +1,36 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useLangRouter } from '@/composables/useLangRouter'
 
-const router = useRouter()
+const { lang, push } = useLangRouter()
+
+const btr = {
+  es: {
+    stepDone: 'Video',
+    stepActive: 'Agenda',
+    eyebrow: 'Casi listo',
+    title1: 'Elige el horario de tu',
+    titleAccent: 'asesoría de catering',
+    subtitle: 'Una sesión con Alejandro Moreno para conversar sobre tu evento y diseñar la propuesta de catering perfecta.',
+    iframeTitle: 'Agenda tu consulta con Master Crepes',
+    privacyLink: 'Política de Privacidad',
+    legalLink: 'Aviso Legal',
+    footerCopy: 'Todos los derechos reservados.',
+  },
+  en: {
+    stepDone: 'Video',
+    stepActive: 'Schedule',
+    eyebrow: 'Almost there',
+    title1: 'Choose your time for a',
+    titleAccent: 'catering consultation',
+    subtitle: 'A session with Alejandro Moreno to talk about your event and design the perfect catering proposal.',
+    iframeTitle: 'Schedule your consultation with Master Crepes',
+    privacyLink: 'Privacy Policy',
+    legalLink: 'Legal Notice',
+    footerCopy: 'All rights reserved.',
+  },
+}
+const bt = computed(() => btr[lang.value])
 const iframeHeight = ref(1100)
 
 // GHL Master Crepes Calendar URL
@@ -27,7 +55,7 @@ const calendarUrl = computed(() => {
 const onMessage = (event: MessageEvent) => {
   if (Array.isArray(event.data) && event.data[0] === 'msgsndr-booking-complete') {
     localStorage.setItem('os_booked_at', String(Date.now()))
-    router.push('/cita-confirmada')
+    push('/cita-confirmada')
   }
   if (event.data?.type === 'booking-app' && typeof event.data.height === 'number') {
     iframeHeight.value = event.data.height + 40
@@ -67,12 +95,12 @@ onUnmounted(() => window.removeEventListener('message', onMessage))
             <div class="stepper__circle">
               <i class="fa-solid fa-check" aria-hidden="true"></i>
             </div>
-            <span class="stepper__label">Video</span>
+            <span class="stepper__label">{{ bt.stepDone }}</span>
           </div>
           <div class="stepper__line stepper__line--done"></div>
           <div class="stepper__step stepper__step--active">
             <div class="stepper__circle">2</div>
-            <span class="stepper__label">Agenda</span>
+            <span class="stepper__label">{{ bt.stepActive }}</span>
           </div>
         </div>
       </div>
@@ -81,15 +109,13 @@ onUnmounted(() => window.removeEventListener('message', onMessage))
       <section class="booking__heading">
         <p class="booking__eyebrow">
           <i class="fa-solid fa-tree" aria-hidden="true"></i>
-          Casi listo
+          {{ bt.eyebrow }}
         </p>
         <h1 class="booking__title">
-          Elige el horario de tu
-          <span class="booking__title-accent">asesoría de diseño</span>
+          {{ bt.title1 }}
+          <span class="booking__title-accent">{{ bt.titleAccent }}</span>
         </h1>
-        <p class="booking__subtitle">
-          Una sesión con Alejandro Moreno para conversar sobre tu evento y diseñar la propuesta de catering perfecta.
-        </p>
+        <p class="booking__subtitle">{{ bt.subtitle }}</p>
       </section>
 
       <!-- Calendar iframe -->
@@ -97,7 +123,7 @@ onUnmounted(() => window.removeEventListener('message', onMessage))
         <iframe
           :src="calendarUrl"
           :style="{ height: iframeHeight + 'px' }"
-          title="Agenda tu consulta con Master Crepes"
+          :title="bt.iframeTitle"
           class="calendar__iframe"
           frameborder="0"
           scrolling="no"
@@ -110,10 +136,10 @@ onUnmounted(() => window.removeEventListener('message', onMessage))
     <!-- Footer -->
     <footer class="booking__footer">
       <nav class="booking__footer-links" aria-label="Legal">
-        <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
-        <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
+        <RouterLink to="/politicas-privacidad">{{ bt.privacyLink }}</RouterLink>
+        <RouterLink to="/aviso-legal">{{ bt.legalLink }}</RouterLink>
       </nav>
-      <p class="booking__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.</p>
+      <p class="booking__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. {{ bt.footerCopy }}</p>
     </footer>
 
   </div>

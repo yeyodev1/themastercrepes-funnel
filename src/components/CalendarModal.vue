@@ -1,13 +1,105 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { trackStage, generateEventId } from '@/utils/ghl'
 import { useContactStore } from '@/stores/contact'
+import { useLangRouter } from '@/composables/useLangRouter'
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 
-const router = useRouter()
+const { lang, push } = useLangRouter()
+
+const cmtr = {
+  es: {
+    title: 'Antes de agendar, cuéntanos sobre',
+    titleAccent: 'tu evento',
+    subtitle: '5 preguntas rápidas para diseñar tu propuesta — 60 segundos.',
+    q1: '¿Qué tipo de evento estás organizando?',
+    q1opts: [
+      { value: 'corporativo', label: 'Evento corporativo (empresa)' },
+      { value: 'boda',        label: 'Boda o celebración' },
+      { value: 'cumpleanos',  label: 'Cumpleaños o reunión familiar' },
+      { value: 'gala',        label: 'Gala o evento social' },
+      { value: 'otro',        label: 'Otro evento' },
+    ],
+    q2: '¿Cuántos invitados esperan en el evento?',
+    q2opts: [
+      { value: 'menos50',   label: 'Menos de 50 personas' },
+      { value: '50-150',    label: '50 a 150 personas' },
+      { value: '150-300',   label: '150 a 300 personas' },
+      { value: 'mas300',    label: 'Más de 300 personas' },
+    ],
+    q3: '¿Cuándo está planificado tu evento?',
+    q3opts: [
+      { value: 'proximo_mes',     label: 'En el próximo mes' },
+      { value: 'proximos_3meses', label: 'En los próximos 3 meses' },
+      { value: 'proximos_6meses', label: 'En los próximos 6 meses' },
+      { value: 'planificando',    label: 'Estoy en planificación' },
+    ],
+    q4: '¿Cuál es tu presupuesto para el catering?',
+    q4opts: [
+      { value: 'mas5000',     label: 'Más de $5,000 USD' },
+      { value: '1500-5000',   label: '$1,500 - $5,000 USD' },
+      { value: '500-1500',    label: '$500 - $1,500 USD' },
+      { value: 'menos500',    label: 'Menos de $500 USD' },
+    ],
+    q5: 'Cuéntanos un poco sobre tu evento',
+    q5ph: 'Ej: Estamos organizando una cena corporativa para 80 personas el próximo mes. Queremos una estación de crepes en vivo que sorprenda a nuestros clientes...',
+    q5hint: (n: number) => `${n}/10 palabras mínimo`,
+    consent: 'Acepto que Master Crepes me contacte para presentarme una propuesta de catering personalizada.',
+    submit: 'Ver disponibilidad',
+    submitting: 'Procesando...',
+    errRequired: 'Selecciona una opción',
+    errDesc: 'Describe tu evento con al menos 10 palabras',
+    errConsent: 'Debes aceptar para continuar',
+    closeLabel: 'Cerrar',
+  },
+  en: {
+    title: 'Before booking, tell us about',
+    titleAccent: 'your event',
+    subtitle: '5 quick questions to design your proposal — 60 seconds.',
+    q1: 'What type of event are you organizing?',
+    q1opts: [
+      { value: 'corporativo', label: 'Corporate event (company)' },
+      { value: 'boda',        label: 'Wedding or celebration' },
+      { value: 'cumpleanos',  label: 'Birthday or family gathering' },
+      { value: 'gala',        label: 'Gala or social event' },
+      { value: 'otro',        label: 'Other event' },
+    ],
+    q2: 'How many guests are expected at the event?',
+    q2opts: [
+      { value: 'menos50',   label: 'Fewer than 50 people' },
+      { value: '50-150',    label: '50 to 150 people' },
+      { value: '150-300',   label: '150 to 300 people' },
+      { value: 'mas300',    label: 'More than 300 people' },
+    ],
+    q3: 'When is your event planned?',
+    q3opts: [
+      { value: 'proximo_mes',     label: 'In the next month' },
+      { value: 'proximos_3meses', label: 'In the next 3 months' },
+      { value: 'proximos_6meses', label: 'In the next 6 months' },
+      { value: 'planificando',    label: "I'm in the planning stage" },
+    ],
+    q4: 'What is your budget for catering?',
+    q4opts: [
+      { value: 'mas5000',     label: 'More than $5,000 USD' },
+      { value: '1500-5000',   label: '$1,500 - $5,000 USD' },
+      { value: '500-1500',    label: '$500 - $1,500 USD' },
+      { value: 'menos500',    label: 'Less than $500 USD' },
+    ],
+    q5: 'Tell us a bit about your event',
+    q5ph: "e.g. We're organizing a corporate dinner for 80 people next month. We want a live crêpe station that will wow our clients and be the center of attention for the evening...",
+    q5hint: (n: number) => `${n}/10 words minimum`,
+    consent: 'I agree to be contacted by Master Crepes to receive a personalized catering proposal.',
+    submit: 'Check availability',
+    submitting: 'Processing...',
+    errRequired: 'Please select an option',
+    errDesc: 'Describe your event with at least 10 words',
+    errConsent: 'You must accept to continue',
+    closeLabel: 'Close',
+  },
+}
+const cmt = computed(() => cmtr[lang.value])
 const contactStore = useContactStore()
 const IS_DEV = window.location.hostname === 'localhost'
 
@@ -135,10 +227,10 @@ ${califica ? '✅ CALIFICA' : '❌ NO CALIFICA — presupuesto menor a $500'}
 
   if (califica) {
     ;(window as any).fbq?.('track', 'Lead')
-    router.push('/agendar')
+    push('/agendar')
   } else {
     if (!IS_DEV) localStorage.setItem('os_disq_at', String(Date.now()))
-    router.push('/sin-espacio')
+    push('/sin-espacio')
   }
 }
 
@@ -163,7 +255,7 @@ watch(() => props.open, (v) => {
 
         <div class="cal-modal">
 
-          <button class="cal-close" @click="emit('close')" aria-label="Cerrar">
+          <button class="cal-close" @click="emit('close')" :aria-label="cmt.closeLabel">
             <i class="fa-solid fa-xmark"></i>
           </button>
 
@@ -172,138 +264,96 @@ watch(() => props.open, (v) => {
               <i class="fa-solid fa-utensils"></i>
             </div>
             <h2 id="cal-title" class="cal-title">
-              Antes de agendar, cuéntanos sobre
-              <span class="cal-accent">tu evento</span>
+              {{ cmt.title }}
+              <span class="cal-accent">{{ cmt.titleAccent }}</span>
             </h2>
-            <p class="cal-subtitle">5 preguntas rápidas para diseñar tu propuesta — 60 segundos.</p>
+            <p class="cal-subtitle">{{ cmt.subtitle }}</p>
           </div>
 
           <form class="cal-form" @submit.prevent="handleSubmit" novalidate>
 
-            <!-- Q1 — Tipo de Evento -->
+            <!-- Q1 -->
             <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.tipo_evento }">
-              <legend class="cal-legend">
-                <span class="cal-q-num">01</span>
-                ¿Qué tipo de evento estás organizando?
-              </legend>
+              <legend class="cal-legend"><span class="cal-q-num">01</span> {{ cmt.q1 }}</legend>
               <div class="cal-options">
-                <label v-for="opt in [
-                  { value: 'corporativo', label: 'Evento corporativo (empresa)' },
-                  { value: 'boda',        label: 'Boda o celebración' },
-                  { value: 'cumpleanos',  label: 'Cumpleaños o reunión familiar' },
-                  { value: 'gala',        label: 'Gala o evento social' },
-                  { value: 'otro',        label: 'Otro evento' },
-                ]" :key="opt.value" class="cal-option" :class="{ selected: form.tipo_evento === opt.value }">
+                <label v-for="opt in cmt.q1opts" :key="opt.value" class="cal-option" :class="{ selected: form.tipo_evento === opt.value }">
                   <input type="radio" :value="opt.value" v-model="form.tipo_evento" hidden />
                   <span class="cal-option__radio" aria-hidden="true" />
                   <span class="cal-option__label">{{ opt.label }}</span>
                 </label>
               </div>
-              <span v-if="touched && !form.tipo_evento" class="cal-error">Selecciona una opción</span>
+              <span v-if="touched && !form.tipo_evento" class="cal-error">{{ cmt.errRequired }}</span>
             </fieldset>
 
-            <!-- Q2 — Número de Invitados -->
+            <!-- Q2 -->
             <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.invitados }">
-              <legend class="cal-legend">
-                <span class="cal-q-num">02</span>
-                ¿Cuántos invitados esperan en el evento?
-              </legend>
+              <legend class="cal-legend"><span class="cal-q-num">02</span> {{ cmt.q2 }}</legend>
               <div class="cal-options">
-                <label v-for="opt in [
-                  { value: 'menos50',   label: 'Menos de 50 personas' },
-                  { value: '50-150',    label: '50 a 150 personas' },
-                  { value: '150-300',   label: '150 a 300 personas' },
-                  { value: 'mas300',    label: 'Más de 300 personas' },
-                ]" :key="opt.value" class="cal-option" :class="{ selected: form.invitados === opt.value }">
+                <label v-for="opt in cmt.q2opts" :key="opt.value" class="cal-option" :class="{ selected: form.invitados === opt.value }">
                   <input type="radio" :value="opt.value" v-model="form.invitados" hidden />
                   <span class="cal-option__radio" aria-hidden="true" />
                   <span class="cal-option__label">{{ opt.label }}</span>
                 </label>
               </div>
-              <span v-if="touched && !form.invitados" class="cal-error">Selecciona una opción</span>
+              <span v-if="touched && !form.invitados" class="cal-error">{{ cmt.errRequired }}</span>
             </fieldset>
 
-            <!-- Q3 — Cuándo es el evento -->
+            <!-- Q3 -->
             <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.fecha }">
-              <legend class="cal-legend">
-                <span class="cal-q-num">03</span>
-                ¿Cuándo está planificado tu evento?
-              </legend>
+              <legend class="cal-legend"><span class="cal-q-num">03</span> {{ cmt.q3 }}</legend>
               <div class="cal-options">
-                <label v-for="opt in [
-                  { value: 'proximo_mes',     label: 'En el próximo mes' },
-                  { value: 'proximos_3meses', label: 'En los próximos 3 meses' },
-                  { value: 'proximos_6meses', label: 'En los próximos 6 meses' },
-                  { value: 'planificando',    label: 'Estoy en planificación' },
-                ]" :key="opt.value" class="cal-option" :class="{ selected: form.fecha === opt.value }">
+                <label v-for="opt in cmt.q3opts" :key="opt.value" class="cal-option" :class="{ selected: form.fecha === opt.value }">
                   <input type="radio" :value="opt.value" v-model="form.fecha" hidden />
                   <span class="cal-option__radio" aria-hidden="true" />
                   <span class="cal-option__label">{{ opt.label }}</span>
                 </label>
               </div>
-              <span v-if="touched && !form.fecha" class="cal-error">Selecciona una opción</span>
+              <span v-if="touched && !form.fecha" class="cal-error">{{ cmt.errRequired }}</span>
             </fieldset>
 
-            <!-- Q4 — Presupuesto -->
+            <!-- Q4 -->
             <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.presupuesto }">
-              <legend class="cal-legend">
-                <span class="cal-q-num">04</span>
-                ¿Cuál es tu presupuesto para el catering?
-              </legend>
+              <legend class="cal-legend"><span class="cal-q-num">04</span> {{ cmt.q4 }}</legend>
               <div class="cal-options">
-                <label v-for="opt in [
-                  { value: 'mas5000',     label: 'Más de $5,000 USD' },
-                  { value: '1500-5000',   label: '$1,500 - $5,000 USD' },
-                  { value: '500-1500',    label: '$500 - $1,500 USD' },
-                  { value: 'menos500',    label: 'Menos de $500 USD' },
-                ]" :key="opt.value" class="cal-option" :class="{ selected: form.presupuesto === opt.value }">
+                <label v-for="opt in cmt.q4opts" :key="opt.value" class="cal-option" :class="{ selected: form.presupuesto === opt.value }">
                   <input type="radio" :value="opt.value" v-model="form.presupuesto" hidden />
                   <span class="cal-option__radio" aria-hidden="true" />
                   <span class="cal-option__label">{{ opt.label }}</span>
                 </label>
               </div>
-              <span v-if="touched && !form.presupuesto" class="cal-error">Selecciona una opción</span>
+              <span v-if="touched && !form.presupuesto" class="cal-error">{{ cmt.errRequired }}</span>
             </fieldset>
 
-            <!-- Q5 — Descripción del evento -->
+            <!-- Q5 -->
             <fieldset class="cal-fieldset" :class="{ 'has-error': touched && wordCount(form.descripcion) < 10 }">
-              <legend class="cal-legend">
-                <span class="cal-q-num">05</span>
-                Cuéntanos un poco sobre tu evento
-              </legend>
+              <legend class="cal-legend"><span class="cal-q-num">05</span> {{ cmt.q5 }}</legend>
               <textarea
                 v-model="form.descripcion"
                 class="cal-textarea"
-                placeholder="Ej: Estamos organizando una cena corporativa para 80 personas el próximo mes. Queremos una estación de crepes en vivo que sorprenda a nuestros clientes y sea el centro de atención de la noche..."
+                :placeholder="cmt.q5ph"
                 rows="4"
                 aria-describedby="q5-hint"
               ></textarea>
-              <span id="q5-hint" class="cal-hint">
-                {{ wordCount(form.descripcion) }}/10 palabras mínimo
-              </span>
-              <span v-if="touched && wordCount(form.descripcion) < 10" class="cal-error">
-                Describe tu evento con al menos 10 palabras
-              </span>
+              <span id="q5-hint" class="cal-hint">{{ cmt.q5hint(wordCount(form.descripcion)) }}</span>
+              <span v-if="touched && wordCount(form.descripcion) < 10" class="cal-error">{{ cmt.errDesc }}</span>
             </fieldset>
 
             <!-- Consent -->
             <label class="cal-consent" :class="{ 'has-error': touched && !form.consent }">
               <input type="checkbox" v-model="form.consent" />
               <span class="cal-consent__box" aria-hidden="true" />
-              <span class="cal-consent__text">
-                Acepto que Master Crepes me contacte para presentarme una propuesta de catering personalizada.
-              </span>
+              <span class="cal-consent__text">{{ cmt.consent }}</span>
             </label>
-            <span v-if="touched && !form.consent" class="cal-error">Debes aceptar para continuar</span>
+            <span v-if="touched && !form.consent" class="cal-error">{{ cmt.errConsent }}</span>
 
             <button type="submit" class="cal-submit" :disabled="submitting">
               <span v-if="!submitting">
                 <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
-                Ver disponibilidad
+                {{ cmt.submit }}
               </span>
               <span v-else>
                 <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
-                Procesando...
+                {{ cmt.submitting }}
               </span>
             </button>
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useLangRouter } from '@/composables/useLangRouter'
 
+const { lang } = useLangRouter()
 const hoursLeft = ref(0)
 
 onMounted(() => {
@@ -13,6 +15,48 @@ onMounted(() => {
     }
   }
 })
+
+const nstr = {
+  es: {
+    cooldownPrefix: 'Podrás solicitar una nueva consulta en',
+    cooldownHour: 'hora',
+    cooldownHours: 'horas',
+    cardTitle: 'Tu presupuesto actual no aplica para nuestro catering',
+    cardSubtitle: 'Nuestro servicio de catering premium requiere un presupuesto mínimo de $500 para garantizar la calidad y experiencia que merecen tus invitados. Cuando tengas el presupuesto, con gusto te atendemos.',
+    stepsTitle: '¿Qué puedes hacer ahora?',
+    step1Title: 'Guarda nuestro contacto',
+    step1Body: 'Cuando tu presupuesto esté listo, escríbenos y con gusto te preparamos una propuesta.',
+    step2Title: 'Recomiéndanos',
+    step2Body: 'Si conoces a alguien que organice eventos con presupuesto mayor a $500, comparte Master Crepes con ellos.',
+    teaserBadge: 'Próximamente',
+    teaserTitle: 'Guía para Organizar Eventos Gastronómicos Memorables',
+    teaserBody: 'Estamos preparando contenido exclusivo sobre cómo organizar eventos gastronómicos memorables según tu tipo de espacio y estilo — sin necesidad de llamar a un especialista.',
+    backLink: 'Volver al inicio',
+    privacyLink: 'Política de Privacidad',
+    legalLink: 'Aviso Legal',
+    footerCopy: 'Todos los derechos reservados.',
+  },
+  en: {
+    cooldownPrefix: 'You can request a new consultation in',
+    cooldownHour: 'hour',
+    cooldownHours: 'hours',
+    cardTitle: "Your current budget doesn't meet our catering requirements",
+    cardSubtitle: 'Our premium catering service requires a minimum budget of $500 to guarantee the quality and experience your guests deserve. When your budget is ready, we\'d love to help.',
+    stepsTitle: 'What can you do now?',
+    step1Title: 'Save our contact',
+    step1Body: "When your budget is ready, reach out and we'll be happy to prepare a proposal for you.",
+    step2Title: 'Refer us',
+    step2Body: 'If you know someone organizing an event with a budget over $500, share Master Crepes with them.',
+    teaserBadge: 'Coming soon',
+    teaserTitle: 'Guide to Planning a Memorable Gastronomic Event',
+    teaserBody: "We're preparing exclusive content on how to organize memorable gastronomic events for any occasion — without needing to call a specialist.",
+    backLink: 'Back to home',
+    privacyLink: 'Privacy Policy',
+    legalLink: 'Legal Notice',
+    footerCopy: 'All rights reserved.',
+  },
+}
+const nst = computed(() => nstr[lang.value])
 </script>
 
 <template>
@@ -28,8 +72,8 @@ onMounted(() => {
       <!-- Cooldown notice -->
       <div v-if="hoursLeft > 0" class="nospace__cooldown" role="alert">
         <i class="fa-solid fa-clock" aria-hidden="true"></i>
-        Podrás solicitar una nueva consulta en
-        <strong>{{ hoursLeft }} hora{{ hoursLeft !== 1 ? 's' : '' }}</strong>
+        {{ nst.cooldownPrefix }}
+        <strong>{{ hoursLeft }} {{ hoursLeft !== 1 ? nst.cooldownHours : nst.cooldownHour }}</strong>
       </div>
 
       <!-- Main message -->
@@ -37,24 +81,21 @@ onMounted(() => {
         <div class="nospace__icon-wrap" aria-hidden="true">
           <i class="fa-solid fa-calendar-xmark nospace__icon"></i>
         </div>
-        <h1 class="nospace__title">Tu presupuesto actual no aplica para nuestro catering</h1>
-        <p class="nospace__subtitle">
-          Nuestro servicio de catering premium requiere un presupuesto mínimo de $500 para garantizar
-          la calidad y experiencia que merecen tus invitados. Cuando tengas el presupuesto, con gusto te atendemos.
-        </p>
+        <h1 class="nospace__title">{{ nst.cardTitle }}</h1>
+        <p class="nospace__subtitle">{{ nst.cardSubtitle }}</p>
       </div>
 
       <!-- Next steps -->
       <div class="nospace__steps">
-        <p class="nospace__steps-title">¿Qué puedes hacer ahora?</p>
+        <p class="nospace__steps-title">{{ nst.stepsTitle }}</p>
         <ul class="nospace__steps-list" role="list">
           <li>
             <div class="nospace__step-icon" aria-hidden="true">
               <i class="fa-solid fa-envelope"></i>
             </div>
             <div>
-              <strong>Guarda nuestro contacto</strong>
-              <p>Cuando tu presupuesto esté listo, escríbenos y con gusto te preparamos una propuesta.</p>
+              <strong>{{ nst.step1Title }}</strong>
+              <p>{{ nst.step1Body }}</p>
             </div>
           </li>
           <li>
@@ -62,8 +103,8 @@ onMounted(() => {
               <i class="fa-brands fa-whatsapp"></i>
             </div>
             <div>
-              <strong>Recomiéndanos</strong>
-              <p>Si conoces a alguien que organice eventos con presupuesto mayor a $500, comparte Master Crepes con ellos.</p>
+              <strong>{{ nst.step2Title }}</strong>
+              <p>{{ nst.step2Body }}</p>
             </div>
           </li>
         </ul>
@@ -73,19 +114,16 @@ onMounted(() => {
       <div class="nospace__teaser">
         <div class="nospace__teaser-badge">
           <i class="fa-solid fa-tree" aria-hidden="true"></i>
-          Próximamente
+          {{ nst.teaserBadge }}
         </div>
-        <h2 class="nospace__teaser-title">Guía de Diseño y Selección de Madera</h2>
-        <p class="nospace__teaser-body">
-          Estamos preparando contenido exclusivo sobre cómo organizar eventos gastronómicos memorables
-          según tu tipo de espacio y estilo — sin necesidad de llamar a un especialista.
-        </p>
+        <h2 class="nospace__teaser-title">{{ nst.teaserTitle }}</h2>
+        <p class="nospace__teaser-body">{{ nst.teaserBody }}</p>
       </div>
 
       <div class="nospace__back">
-        <RouterLink to="/" class="nospace__back-link">
+        <RouterLink :to="lang === 'es' ? '/es' : '/'" class="nospace__back-link">
           <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-          Volver al inicio
+          {{ nst.backLink }}
         </RouterLink>
       </div>
 
@@ -93,10 +131,10 @@ onMounted(() => {
 
     <footer class="nospace__footer">
       <nav class="nospace__footer-links" aria-label="Legal">
-        <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
-        <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
+        <RouterLink to="/politicas-privacidad">{{ nst.privacyLink }}</RouterLink>
+        <RouterLink to="/aviso-legal">{{ nst.legalLink }}</RouterLink>
       </nav>
-      <p class="nospace__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.</p>
+      <p class="nospace__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. {{ nst.footerCopy }}</p>
     </footer>
 
   </div>

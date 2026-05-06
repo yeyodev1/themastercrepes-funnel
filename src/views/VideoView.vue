@@ -1,8 +1,69 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import CalendarModal from '@/components/CalendarModal.vue'
 import { trackStage, generateEventId } from '@/utils/ghl'
 import { useContactStore } from '@/stores/contact'
+import { useLangRouter } from '@/composables/useLangRouter'
+
+const { lang } = useLangRouter()
+
+const vtr = {
+  es: {
+    stepLabel: 'Paso 1 de 2',
+    eyebrow: 'Antes de agendar',
+    h1: 'Descubre por qué los mejores eventos',
+    accent: 'eligen a Master Crepes',
+    subtitle: 'Ve el video completo. Alejandro Moreno te explica cómo transformamos eventos ordinarios en experiencias gastronómicas extraordinarias.',
+    lockedPrefix: 'El botón se habilitará en',
+    ctaBtn: 'SOLICITAR MI PROPUESTA DE CATERING',
+    ctaSub: '100% gratuito · Sin compromiso · Cupos limitados',
+    authorityEyebrow: 'Tu especialista en catering',
+    authorityRole: 'Fundador y Chef Ejecutivo — Master Crepes',
+    authorityBio: 'Con más de 8 años de experiencia en catering premium, Alejandro Moreno es el referente de las crepes francesas auténticas para eventos de alto nivel. Ha transformado cientos de celebraciones en experiencias gastronómicas memorables que sus clientes recuerdan por años.',
+    creds: [
+      'Especialista en crepes francesas auténticas',
+      'Catering para eventos corporativos y bodas',
+      'Servicio en vivo: experiencia visual y gastronómica',
+    ],
+    captureTitle: 'Antes de ver el video, confirma tus datos',
+    captureSub: 'Para personalizar tu propuesta de catering',
+    captureNameLabel: 'Nombre',
+    captureLastLabel: 'Apellido',
+    captureCompanyLabel: 'Empresa u organizador',
+    captureEmailLabel: 'Email',
+    capturePhoneLabel: 'Teléfono',
+    captureSubmit: 'Ver el video',
+    captureLoading: 'Cargando...',
+  },
+  en: {
+    stepLabel: 'Step 1 of 2',
+    eyebrow: 'Before booking',
+    h1: 'Discover why the best events',
+    accent: 'choose Master Crepes',
+    subtitle: 'Watch the full video. Alejandro Moreno explains how we transform ordinary events into extraordinary gastronomic experiences.',
+    lockedPrefix: 'Button unlocks in',
+    ctaBtn: 'REQUEST MY CATERING PROPOSAL',
+    ctaSub: '100% free · No commitment · Limited spots',
+    authorityEyebrow: 'Your catering specialist',
+    authorityRole: 'Founder & Executive Chef — Master Crepes',
+    authorityBio: 'With over 8 years of experience in premium catering, Alejandro Moreno is the leading expert in authentic French crêpes for high-end events. He has transformed hundreds of celebrations into memorable gastronomic experiences his clients talk about for years.',
+    creds: [
+      'Specialist in authentic French crêpes',
+      'Catering for corporate events and weddings',
+      'Live service: visual and gastronomic experience',
+    ],
+    captureTitle: 'Before watching, confirm your info',
+    captureSub: 'To personalize your catering proposal',
+    captureNameLabel: 'First name',
+    captureLastLabel: 'Last name',
+    captureCompanyLabel: 'Company or event organizer',
+    captureEmailLabel: 'Email',
+    capturePhoneLabel: 'Phone',
+    captureSubmit: 'Watch the video',
+    captureLoading: 'Loading...',
+  },
+}
+const vt = computed(() => vtr[lang.value])
 
 const contactStore = useContactStore()
 
@@ -111,7 +172,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
         <span class="vv-stepper__pill">
           <span class="vv-stepper__dot vv-stepper__dot--active" aria-current="step"></span>
           <span class="vv-stepper__dot"></span>
-          <span class="vv-stepper__label">Paso 1 de 2</span>
+          <span class="vv-stepper__label">{{ vt.stepLabel }}</span>
         </span>
       </div>
 
@@ -119,15 +180,13 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
       <section class="vv-headline">
         <p class="vv-eyebrow">
           <i class="fa-solid fa-utensils" aria-hidden="true"></i>
-          Antes de agendar
+          {{ vt.eyebrow }}
         </p>
         <h1 class="vv-h1">
-          Descubre por qué los mejores eventos
-          <span class="vv-accent">eligen a Master Crepes</span>
+          {{ vt.h1 }}
+          <span class="vv-accent">{{ vt.accent }}</span>
         </h1>
-        <p class="vv-subtitle">
-          Ve el video completo. Alejandro Moreno te explica cómo transformamos eventos ordinarios en experiencias gastronómicas extraordinarias.
-        </p>
+        <p class="vv-subtitle">{{ vt.subtitle }}</p>
       </section>
 
       <!-- Wistia video embed -->
@@ -142,7 +201,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
         <div v-if="!ctaUnlocked" class="vv-cta-locked" aria-live="polite">
           <i class="fa-solid fa-clock vv-cta-locked__icon" aria-hidden="true"></i>
           <p class="vv-cta-locked__text">
-            El botón se habilitará en <strong>{{ formattedTime() }}</strong>
+            {{ vt.lockedPrefix }} <strong>{{ formattedTime() }}</strong>
           </p>
           <div class="vv-cta-locked__bar-wrap" aria-hidden="true">
             <div
@@ -158,12 +217,12 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
           @click="calendarOpen = true"
         >
           <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
-          SOLICITAR MI PROPUESTA DE CATERING
+          {{ vt.ctaBtn }}
         </button>
 
         <p class="vv-cta-sub">
           <i class="fa-solid fa-lock" aria-hidden="true"></i>
-          100% gratuito &nbsp;·&nbsp; Sin compromiso &nbsp;·&nbsp; Cupos limitados
+          {{ vt.ctaSub }}
         </p>
       </div>
 
@@ -176,18 +235,14 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
             </div>
           </div>
           <div class="vv-authority__content">
-            <p class="vv-authority__eyebrow">Tu especialista en catering</p>
+            <p class="vv-authority__eyebrow">{{ vt.authorityEyebrow }}</p>
             <h2 id="authority-heading" class="vv-authority__name">Alejandro Moreno</h2>
-            <p class="vv-authority__role">Fundador y Chef Ejecutivo — Master Crepes</p>
-            <p class="vv-authority__bio">
-              Con más de 8 años de experiencia en catering premium, Alejandro Moreno es el referente
-              de las crepes francesas auténticas para eventos de alto nivel. Ha transformado cientos
-              de celebraciones en experiencias gastronómicas memorables que sus clientes recuerdan por años.
-            </p>
+            <p class="vv-authority__role">{{ vt.authorityRole }}</p>
+            <p class="vv-authority__bio">{{ vt.authorityBio }}</p>
             <ul class="vv-authority__creds" role="list">
-              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Especialista en crepes francesas auténticas</li>
-              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Catering para eventos corporativos y bodas</li>
-              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Servicio en vivo: experiencia visual y gastronómica</li>
+              <li v-for="cred in vt.creds" :key="cred">
+                <i class="fa-solid fa-check-circle" aria-hidden="true"></i> {{ cred }}
+              </li>
             </ul>
           </div>
         </div>
@@ -217,26 +272,26 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
           <div class="capture-modal__header">
             <h2 class="capture-modal__logo-text">MASTER CREPES</h2>
             <h2 id="capture-title" class="capture-modal__title">
-              Antes de ver el video, <span>confirma tus datos</span>
+              {{ vt.captureTitle }}
             </h2>
-            <p class="capture-modal__sub">Para personalizar tu propuesta de catering</p>
+            <p class="capture-modal__sub">{{ vt.captureSub }}</p>
           </div>
           <form class="capture-modal__form" @submit.prevent="submitCapture" novalidate>
             <div class="capture-row">
               <div class="capture-field" :class="{ error: captureTouched.nombre && captureErrors.nombre }">
-                <label>Nombre</label>
-                <input v-model="captureForm.nombre" type="text" placeholder="Ej: Juan" @blur="captureTouched.nombre = true" />
+                <label>{{ vt.captureNameLabel }}</label>
+                <input v-model="captureForm.nombre" type="text" :placeholder="vt.captureNameLabel" @blur="captureTouched.nombre = true" />
                 <span v-if="captureTouched.nombre && captureErrors.nombre" class="capture-field__error">{{ captureErrors.nombre }}</span>
               </div>
               <div class="capture-field" :class="{ error: captureTouched.apellido && captureErrors.apellido }">
-                <label>Apellido</label>
-                <input v-model="captureForm.apellido" type="text" placeholder="Ej: Pérez" @blur="captureTouched.apellido = true" />
+                <label>{{ vt.captureLastLabel }}</label>
+                <input v-model="captureForm.apellido" type="text" :placeholder="vt.captureLastLabel" @blur="captureTouched.apellido = true" />
                 <span v-if="captureTouched.apellido && captureErrors.apellido" class="capture-field__error">{{ captureErrors.apellido }}</span>
               </div>
             </div>
             <div class="capture-field" :class="{ error: captureTouched.empresa && captureErrors.empresa }">
-              <label>Empresa u organizador</label>
-              <input v-model="captureForm.empresa" type="text" placeholder="Ej: Mi empresa, ABC Corp" @blur="captureTouched.empresa = true" />
+              <label>{{ vt.captureCompanyLabel }}</label>
+              <input v-model="captureForm.empresa" type="text" :placeholder="vt.captureCompanyLabel" @blur="captureTouched.empresa = true" />
               <span v-if="captureTouched.empresa && captureErrors.empresa" class="capture-field__error">{{ captureErrors.empresa }}</span>
             </div>
             <div class="capture-field" :class="{ error: captureTouched.email && captureErrors.email }">
@@ -252,11 +307,11 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
             <button type="submit" class="capture-submit" :disabled="captureSubmitting">
               <span v-if="!captureSubmitting">
                 <i class="fa-solid fa-play" aria-hidden="true"></i>
-                Ver el video
+                {{ vt.captureSubmit }}
               </span>
               <span v-else>
                 <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
-                Cargando...
+                {{ vt.captureLoading }}
               </span>
             </button>
           </form>

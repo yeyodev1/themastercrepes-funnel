@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
+import { useLangRouter } from '@/composables/useLangRouter'
 
-// ── Contact name from localStorage ───────────────────────────────────────────
+const { lang } = useLangRouter()
+
 const contactName = computed(() => {
   try {
     const stored = localStorage.getItem('os_contact')
@@ -10,34 +12,55 @@ const contactName = computed(() => {
   } catch { return '' }
 })
 
-// ── Fire fbq CompleteRegistration once ───────────────────────────────────────
 onMounted(() => {
   const alreadyFired = sessionStorage.getItem('os_complete_fired')
   if (!alreadyFired) {
-    ;(window as any).fbq?.('track', 'CompleteRegistration', {
-      content_name: 'consulta-agendada',
-    })
+    ;(window as any).fbq?.('track', 'CompleteRegistration', { content_name: 'consulta-agendada' })
     sessionStorage.setItem('os_complete_fired', '1')
   }
 })
 
-const nextSteps = [
-  {
-    icon: 'fa-solid fa-envelope',
-    title: 'Revisa tu email',
-    body: 'Te enviamos la confirmación con todos los detalles de tu consulta de catering.',
+const bktr = {
+  es: {
+    heroTitleNamed: (name: string) => `¡Listo, ${name}!`,
+    heroTitleAnon: '¡Tu consulta está confirmada!',
+    heroSubtitle: 'Tu consulta de catering con Master Crepes ha sido agendada correctamente. En breve recibirás todos los detalles.',
+    stepsLabel: 'Próximos pasos',
+    steps: [
+      { icon: 'fa-solid fa-envelope', title: 'Revisa tu email', body: 'Te enviamos la confirmación con todos los detalles de tu consulta de catering.' },
+      { icon: 'fa-brands fa-whatsapp', title: 'Te contactamos por WhatsApp', body: 'Alejandro Moreno te escribirá para confirmar la reunión y conocer más sobre tu evento.' },
+      { icon: 'fa-solid fa-utensils', title: 'Prepara los detalles de tu evento', body: 'Ten a mano el número de invitados, fecha y preferencias especiales de menú.' },
+    ],
+    teamLabel: 'Tu especialista',
+    teamRole: 'Fundador y Chef Ejecutivo — Master Crepes',
+    teamNote: '"Cada evento merece una experiencia gastronómica que sus invitados recuerden siempre."',
+    disclaimer: 'Los resultados mencionados en el video corresponden a casos reales. Cada evento es único y los resultados dependen de las especificaciones y preferencias del cliente.',
+    privacyLink: 'Política de Privacidad',
+    legalLink: 'Aviso Legal',
+    footerCopy: 'Todos los derechos reservados.',
   },
-  {
-    icon: 'fa-brands fa-whatsapp',
-    title: 'Te contactamos por WhatsApp',
-    body: 'Alejandro Moreno te escribirá para confirmar la reunión y conocer más sobre tu evento.',
+  en: {
+    heroTitleNamed: (name: string) => `All set, ${name}!`,
+    heroTitleAnon: 'Your consultation is confirmed!',
+    heroSubtitle: 'Your catering consultation with Master Crepes has been successfully scheduled. You\'ll receive all the details shortly.',
+    stepsLabel: 'Next steps',
+    steps: [
+      { icon: 'fa-solid fa-envelope', title: 'Check your email', body: 'We sent you the confirmation with all the details of your catering consultation.' },
+      { icon: 'fa-brands fa-whatsapp', title: "We'll reach out on WhatsApp", body: 'Alejandro Moreno will write to confirm the meeting and learn more about your event.' },
+      { icon: 'fa-solid fa-utensils', title: 'Prepare your event details', body: 'Have ready the number of guests, date, and any special menu preferences.' },
+    ],
+    teamLabel: 'Your specialist',
+    teamRole: 'Founder & Executive Chef — Master Crepes',
+    teamNote: '"Every event deserves a gastronomic experience their guests will always remember."',
+    disclaimer: 'The results mentioned in the video correspond to real cases. Every event is unique and results depend on the specifications and preferences of the client.',
+    privacyLink: 'Privacy Policy',
+    legalLink: 'Legal Notice',
+    footerCopy: 'All rights reserved.',
   },
-  {
-    icon: 'fa-solid fa-utensils',
-    title: 'Prepara los detalles de tu evento',
-    body: 'Ten a mano el número de invitados, fecha y preferencias especiales de menú lograr en tu espacio.',
-  },
-]
+}
+
+const bkt = computed(() => bktr[lang.value])
+const nextSteps = computed(() => bkt.value.steps)
 </script>
 
 <template>
@@ -56,22 +79,17 @@ const nextSteps = [
           <i class="fa-solid fa-circle-check"></i>
         </div>
         <h1 class="booked__hero-title">
-          <template v-if="contactName">
-            ¡Listo, {{ contactName }}!
-          </template>
-          <template v-else>
-            ¡Tu consulta está confirmada!
-          </template>
+          <template v-if="contactName">{{ bkt.heroTitleNamed(contactName) }}</template>
+          <template v-else>{{ bkt.heroTitleAnon }}</template>
         </h1>
         <p class="booked__hero-subtitle">
-          Tu consulta de catering con Master Crepes ha sido agendada correctamente.
-          En breve recibirás todos los detalles.
+          {{ bkt.heroSubtitle }}
         </p>
       </section>
 
       <!-- What to expect -->
       <section class="booked__steps" aria-labelledby="steps-heading">
-        <p id="steps-heading" class="booked__steps-label">Próximos pasos</p>
+        <p id="steps-heading" class="booked__steps-label">{{ bkt.stepsLabel }}</p>
         <div class="booked__steps-grid">
           <div v-for="(step, i) in nextSteps" :key="i" class="booked__step">
             <div class="booked__step-num" aria-hidden="true">{{ String(i + 1).padStart(2, '0') }}</div>
@@ -86,17 +104,15 @@ const nextSteps = [
 
       <!-- Team card — Ale Barreto -->
       <section class="booked__team" aria-labelledby="team-heading">
-        <p id="team-heading" class="booked__team-label">Tu especialista</p>
+        <p id="team-heading" class="booked__team-label">{{ bkt.teamLabel }}</p>
         <div class="booked__team-card">
           <div class="booked__team-avatar" aria-hidden="true">
             <i class="fa-solid fa-user-tie"></i>
           </div>
           <div class="booked__team-info">
             <strong class="booked__team-name">Alejandro Moreno</strong>
-            <span class="booked__team-role">Fundador y Chef Ejecutivo — Master Crepes</span>
-            <p class="booked__team-note">
-              "Cada evento merece una experiencia gastronómica que sus invitados recuerden siempre."
-            </p>
+            <span class="booked__team-role">{{ bkt.teamRole }}</span>
+            <p class="booked__team-note">{{ bkt.teamNote }}</p>
           </div>
         </div>
       </section>
@@ -104,17 +120,17 @@ const nextSteps = [
       <!-- Disclaimer -->
       <p class="booked__disclaimer">
         <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-        Los resultados mencionados en el video corresponden a casos reales. Cada proyecto de diseño y construcción es único y los resultados dependen de las especificaciones y materiales seleccionados.
+        {{ bkt.disclaimer }}
       </p>
 
     </main>
 
     <footer class="booked__footer">
       <nav class="booked__footer-links" aria-label="Legal">
-        <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
-        <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
+        <RouterLink to="/politicas-privacidad">{{ bkt.privacyLink }}</RouterLink>
+        <RouterLink to="/aviso-legal">{{ bkt.legalLink }}</RouterLink>
       </nav>
-      <p class="booked__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.</p>
+      <p class="booked__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. {{ bkt.footerCopy }}</p>
     </footer>
 
   </div>

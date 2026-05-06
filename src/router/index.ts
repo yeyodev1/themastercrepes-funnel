@@ -17,29 +17,30 @@ declare module 'vue-router' {
     ogTitle: string
     ogDescription: string
     ogUrl: string
+    lang: 'es' | 'en'
     jsonLd?: object[]
   }
 }
 
-// ── Router ─────────────────────────────────────────────────────────────────────
+const MC = 'https://themastercrepes.com'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior: () => ({ top: 0, behavior: 'instant' }),
   routes: [
+    // ── English ───────────────────────────────────────────────────────────────
     {
       path: '/',
-      alias: '/registro-vsl-tr',
       name: 'funnel',
       component: FunnelView,
       meta: {
-        title: 'Ale Barreto | Expertos en Madera — Diseño y Construcción de Alta Gama',
-        description:
-          'Expertos en diseño y construcción en madera. Transformamos espacios con acabados premium y estructuras sostenibles. Agenda tu asesoría gratuita.',
-        canonical: 'https://alebarreto.com/',
-        ogTitle: 'Ale Barreto | Expertos en Madera',
-        ogDescription:
-          'Diseño y construcción en madera de alta gama. Calidad artesanal para tus proyectos residenciales y comerciales.',
-        ogUrl: 'https://alebarreto.com/',
+        lang: 'en',
+        title: 'Master Crepes | Premium French Crêpe Catering for Events',
+        description: 'Premium French crêpe catering for corporate events, weddings and celebrations. Request a free quote with Alejandro Moreno.',
+        canonical: `${MC}/`,
+        ogTitle: 'Master Crepes | Premium French Crêpe Catering',
+        ogDescription: 'Live crêpe stations for your most memorable events. Free quote, no commitment.',
+        ogUrl: `${MC}/`,
       } satisfies RouteMeta,
     },
     {
@@ -47,12 +48,13 @@ const router = createRouter({
       name: 'video',
       component: VideoView,
       meta: {
-        title: 'Mira el video | Ale Barreto — Paso 1 de 2',
-        description: 'Descubre cómo transformamos espacios con madera de alta gama en nuestro video exclusivo.',
-        canonical: 'https://alebarreto.com/ver-video',
-        ogTitle: 'Mira el video | Ale Barreto',
-        ogDescription: 'Ve el video y agenda tu Cita Estratégica gratuita con Ale Barreto.',
-        ogUrl: 'https://alebarreto.com/ver-video',
+        lang: 'en',
+        title: 'Watch the Video | Master Crepes — Step 1 of 2',
+        description: 'See how Master Crepes transforms ordinary events into extraordinary gastronomic experiences.',
+        canonical: `${MC}/ver-video`,
+        ogTitle: 'Watch the Video | Master Crepes',
+        ogDescription: 'Watch the video and schedule your free catering consultation.',
+        ogUrl: `${MC}/ver-video`,
       } satisfies RouteMeta,
     },
     {
@@ -60,12 +62,13 @@ const router = createRouter({
       name: 'booking',
       component: BookingView,
       meta: {
-        title: 'Agenda tu Cita | Ale Barreto — Paso 2 de 2',
-        description: 'Selecciona el día y hora para tu Cita Estratégica gratuita con Ale Barreto.',
-        canonical: 'https://alebarreto.com/agendar',
-        ogTitle: 'Agenda tu Cita | Ale Barreto',
-        ogDescription: 'Elige tu horario y reserva tu Cita Estratégica gratuita.',
-        ogUrl: 'https://alebarreto.com/agendar',
+        lang: 'en',
+        title: 'Schedule Your Consultation | Master Crepes — Step 2 of 2',
+        description: 'Choose your date and time for a free catering consultation with Alejandro Moreno.',
+        canonical: `${MC}/agendar`,
+        ogTitle: 'Schedule Your Consultation | Master Crepes',
+        ogDescription: 'Pick your time and book your free catering consultation.',
+        ogUrl: `${MC}/agendar`,
       } satisfies RouteMeta,
     },
     {
@@ -73,12 +76,13 @@ const router = createRouter({
       name: 'booked',
       component: BookedView,
       meta: {
-        title: 'Cita Confirmada | Ale Barreto',
-        description: 'Tu cita estratégica con Ale Barreto está confirmada. Revisa tu correo y prepárate.',
-        canonical: 'https://alebarreto.com/cita-confirmada',
-        ogTitle: 'Cita Confirmada | Ale Barreto',
-        ogDescription: 'Tu cita está reservada. Te contactaremos pronto.',
-        ogUrl: 'https://alebarreto.com/cita-confirmada',
+        lang: 'en',
+        title: 'Consultation Confirmed | Master Crepes',
+        description: 'Your catering consultation with Master Crepes is confirmed. Check your email for details.',
+        canonical: `${MC}/cita-confirmada`,
+        ogTitle: 'Consultation Confirmed | Master Crepes',
+        ogDescription: "Your consultation is booked. We'll be in touch soon.",
+        ogUrl: `${MC}/cita-confirmada`,
       } satisfies RouteMeta,
     },
     {
@@ -86,25 +90,99 @@ const router = createRouter({
       name: 'no-space',
       component: NoSpaceView,
       meta: {
-        title: 'Sin Espacio Disponible | Ale Barreto',
-        description: 'En este momento los cupos de asesoría de Ale Barreto están completos. Te notificaremos cuando se libere un espacio.',
-        canonical: 'https://alebarreto.com/sin-espacio',
-        ogTitle: 'Sin Espacio Disponible | Ale Barreto',
-        ogDescription: 'Los cupos de asesoría están completos. Te avisaremos cuando haya disponibilidad.',
-        ogUrl: 'https://alebarreto.com/sin-espacio',
+        lang: 'en',
+        title: 'Budget Too Low | Master Crepes',
+        description: "Our premium catering requires a minimum budget of $500. We look forward to serving you when you're ready.",
+        canonical: `${MC}/sin-espacio`,
+        ogTitle: 'Budget Too Low | Master Crepes',
+        ogDescription: 'Our catering requires a minimum $500 budget.',
+        ogUrl: `${MC}/sin-espacio`,
       } satisfies RouteMeta,
     },
+    // ── Spanish ───────────────────────────────────────────────────────────────
+    {
+      path: '/es',
+      name: 'funnel-es',
+      component: FunnelView,
+      meta: {
+        lang: 'es',
+        title: 'Master Crepes | Catering Premium de Crepes Francesas',
+        description: 'Catering premium de crepes francesas para eventos corporativos, bodas y celebraciones. Solicita tu cotización gratuita con Alejandro Moreno.',
+        canonical: `${MC}/es`,
+        ogTitle: 'Master Crepes | Catering Premium de Crepes Francesas',
+        ogDescription: 'Estaciones de crepes en vivo para tus eventos más memorables. Cotización gratuita, sin compromiso.',
+        ogUrl: `${MC}/es`,
+      } satisfies RouteMeta,
+    },
+    {
+      path: '/es/ver-video',
+      name: 'video-es',
+      component: VideoView,
+      meta: {
+        lang: 'es',
+        title: 'Ve el Video | Master Crepes — Paso 1 de 2',
+        description: 'Descubre cómo Master Crepes transforma eventos ordinarios en experiencias gastronómicas extraordinarias.',
+        canonical: `${MC}/es/ver-video`,
+        ogTitle: 'Ve el Video | Master Crepes',
+        ogDescription: 'Ve el video y agenda tu consulta de catering gratuita.',
+        ogUrl: `${MC}/es/ver-video`,
+      } satisfies RouteMeta,
+    },
+    {
+      path: '/es/agendar',
+      name: 'booking-es',
+      component: BookingView,
+      meta: {
+        lang: 'es',
+        title: 'Agenda tu Consulta | Master Crepes — Paso 2 de 2',
+        description: 'Elige la fecha y hora para tu consulta de catering gratuita con Alejandro Moreno.',
+        canonical: `${MC}/es/agendar`,
+        ogTitle: 'Agenda tu Consulta | Master Crepes',
+        ogDescription: 'Escoge tu horario y reserva tu consulta de catering gratuita.',
+        ogUrl: `${MC}/es/agendar`,
+      } satisfies RouteMeta,
+    },
+    {
+      path: '/es/cita-confirmada',
+      name: 'booked-es',
+      component: BookedView,
+      meta: {
+        lang: 'es',
+        title: 'Cita Confirmada | Master Crepes',
+        description: 'Tu consulta de catering con Master Crepes está confirmada. Revisa tu correo para los detalles.',
+        canonical: `${MC}/es/cita-confirmada`,
+        ogTitle: 'Cita Confirmada | Master Crepes',
+        ogDescription: 'Tu consulta está agendada. Pronto te contactaremos.',
+        ogUrl: `${MC}/es/cita-confirmada`,
+      } satisfies RouteMeta,
+    },
+    {
+      path: '/es/sin-espacio',
+      name: 'no-space-es',
+      component: NoSpaceView,
+      meta: {
+        lang: 'es',
+        title: 'Presupuesto Insuficiente | Master Crepes',
+        description: 'Nuestro catering premium requiere un presupuesto mínimo de $500. Con gusto te atendemos cuando estés listo.',
+        canonical: `${MC}/es/sin-espacio`,
+        ogTitle: 'Presupuesto Insuficiente | Master Crepes',
+        ogDescription: 'Nuestro catering requiere un presupuesto mínimo de $500.',
+        ogUrl: `${MC}/es/sin-espacio`,
+      } satisfies RouteMeta,
+    },
+    // ── Legal (shared) ────────────────────────────────────────────────────────
     {
       path: '/politicas-privacidad',
       name: 'privacy-policy',
       component: PrivacyPolicyView,
       meta: {
-        title: 'Política de Privacidad | Ale Barreto',
-        description: 'Política de privacidad de Ale Barreto. Información sobre el tratamiento de datos personales.',
-        canonical: 'https://alebarreto.com/politicas-privacidad',
-        ogTitle: 'Política de Privacidad | Ale Barreto',
-        ogDescription: 'Política de privacidad de Ale Barreto.',
-        ogUrl: 'https://alebarreto.com/politicas-privacidad',
+        lang: 'es',
+        title: 'Política de Privacidad | Master Crepes',
+        description: 'Política de privacidad de Master Crepes.',
+        canonical: `${MC}/politicas-privacidad`,
+        ogTitle: 'Política de Privacidad | Master Crepes',
+        ogDescription: 'Política de privacidad de Master Crepes.',
+        ogUrl: `${MC}/politicas-privacidad`,
       } satisfies RouteMeta,
     },
     {
@@ -112,12 +190,13 @@ const router = createRouter({
       name: 'legal-notice',
       component: LegalNoticeView,
       meta: {
-        title: 'Aviso Legal | Ale Barreto',
-        description: 'Aviso legal de Ale Barreto. Términos y condiciones de uso del sitio web.',
-        canonical: 'https://alebarreto.com/aviso-legal',
-        ogTitle: 'Aviso Legal | Ale Barreto',
-        ogDescription: 'Aviso legal de Ale Barreto.',
-        ogUrl: 'https://alebarreto.com/aviso-legal',
+        lang: 'es',
+        title: 'Aviso Legal | Master Crepes',
+        description: 'Aviso legal de Master Crepes.',
+        canonical: `${MC}/aviso-legal`,
+        ogTitle: 'Aviso Legal | Master Crepes',
+        ogDescription: 'Aviso legal de Master Crepes.',
+        ogUrl: `${MC}/aviso-legal`,
       } satisfies RouteMeta,
     },
   ],
@@ -144,7 +223,7 @@ const setCanonical = (href: string) => {
 
 router.afterEach((to) => {
   const meta = to.meta
-  document.title = meta.title ?? 'Ale Barreto'
+  document.title = meta.title ?? 'Master Crepes'
   setMeta('description', meta.description ?? '')
   setOgMeta('og:title', meta.ogTitle ?? meta.title ?? '')
   setOgMeta('og:description', meta.ogDescription ?? meta.description ?? '')
@@ -152,23 +231,22 @@ router.afterEach((to) => {
   setOgMeta('twitter:title', meta.ogTitle ?? meta.title ?? '')
   setOgMeta('twitter:description', meta.ogDescription ?? meta.description ?? '')
   setCanonical(meta.canonical ?? '')
+  document.documentElement.lang = meta.lang === 'en' ? 'en' : 'es'
 })
 
-// ── Router Guards ──────────────────────────────────────────────────────────────
+// ── Guards ────────────────────────────────────────────────────────────────────
 router.beforeEach((to, from, next) => {
+  const isEs = to.path.startsWith('/es')
+  const sfx = isEs ? '-es' : ''
   const isBooked = !!localStorage.getItem('os_booked_at')
   const isDisqualified = !!localStorage.getItem('os_disq_at')
 
-  // Si ya agendó, siempre a la confirmación (excepto legales)
-  if (isBooked && !['booked', 'privacy-policy', 'legal-notice'].includes(to.name as string)) {
-    return next({ name: 'booked' })
+  if (isBooked && !['booked' + sfx, 'privacy-policy', 'legal-notice'].includes(to.name as string)) {
+    return next({ name: 'booked' + sfx })
   }
-
-  // Si está descalificado, no puede ir a agendar ni a confirmación
-  if (isDisqualified && ['booking', 'booked'].includes(to.name as string)) {
-    return next({ name: 'no-space' })
+  if (isDisqualified && ['booking' + sfx, 'booked' + sfx].includes(to.name as string)) {
+    return next({ name: 'no-space' + sfx })
   }
-
   next()
 })
 

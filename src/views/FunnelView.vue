@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import RegistrationModal from '@/components/RegistrationModal.vue'
 import { captureFbParams } from '@/utils/fbclid'
+import { useLangRouter } from '@/composables/useLangRouter'
 
-const router = useRouter()
+const { lang, push } = useLangRouter()
 const modalOpen = ref(false)
 const IS_DEV = window.location.hostname === 'localhost'
 
@@ -12,58 +12,124 @@ const openModal = () => {
   if (!IS_DEV) {
     const disqAt = localStorage.getItem('os_disq_at')
     if (disqAt && Date.now() - Number(disqAt) < 24 * 60 * 60 * 1000) {
-      router.push('/sin-espacio')
+      push('/sin-espacio')
       return
     }
   }
   modalOpen.value = true
 }
 
-const stats = [
-  {
-    icon: 'fa-solid fa-utensils',
-    number: '8+',
-    text: 'Años ofreciendo catering premium en eventos de alto nivel',
+const tr = {
+  es: {
+    urgencyBanner: 'Cupos limitados — expiran en:',
+    eyebrow: 'Catering Premium de Crepes Francesas',
+    headline1: 'Convierte tu evento en una experiencia gastronómica',
+    headline2: 'que tus invitados nunca olvidarán',
+    vslCaption: 'Descubre cómo Alejandro Moreno transforma eventos ordinarios en experiencias gastronómicas extraordinarias',
+    ctaBtn: 'SOLICITAR COTIZACIÓN GRATUITA',
+    ctaSub: '100% gratuito · Sin compromiso · Cupos limitados',
+    statsLabel: 'Resultados reales — eventos reales',
+    problemLabel: '¿Te identificas con esto?',
+    problemTitle: 'Lo que arruina los eventos más importantes',
+    methodLabel: 'Nuestra metodología de catering',
+    methodTitle: 'Tres pasos para un evento perfecto',
+    testimonialLabel: 'Lo que dicen nuestros clientes',
+    testimonialText: '"El catering de Master Crepes fue el alma de nuestra fiesta corporativa. Ver cómo preparaban las crepes en vivo fue el momento favorito de todos. Alejandro y su equipo superaron todas nuestras expectativas."',
+    testimonialAuthor: 'Gerente de Recursos Humanos',
+    testimonialRole: 'Empresa multinacional — Evento corporativo 200 personas',
+    authorityEyebrow: 'Tu especialista en catering',
+    authorityRole: 'Fundador y Chef Ejecutivo — Master Crepes',
+    authorityBio: 'Con más de 8 años de experiencia en catering premium, Alejandro Moreno es el referente de las crepes francesas auténticas para eventos de alto nivel. Ha transformado cientos de celebraciones corporativas, bodas y galas en experiencias gastronómicas memorables que sus clientes recuerdan por años.',
+    ctaFinalTitle: '¿Tu evento merece lo mejor?',
+    ctaFinalSub: 'Solicita una cotización gratuita y personalizada. Conversaremos sobre tu evento, el número de invitados y diseñaremos el menú perfecto para ti.',
+    privacyLink: 'Política de Privacidad',
+    legalLink: 'Aviso Legal',
+    footerCopy: 'Todos los derechos reservados.',
+    pillars: [
+      'Sin catering aburrido que desanima a los invitados',
+      'Sin proveedores que fallan el día del evento',
+      'Sin menús genéricos que no impresionan a nadie',
+      'Con crepes francesas elaboradas al momento frente a tus invitados',
+    ],
+    stats: [
+      { icon: 'fa-solid fa-utensils', number: '8+', text: 'Años ofreciendo catering premium en eventos de alto nivel' },
+      { icon: 'fa-solid fa-star', number: '500+', text: 'Eventos exitosos: corporativos, bodas y celebraciones' },
+      { icon: 'fa-solid fa-heart', number: '98%', text: 'De los clientes repetiría el catering con Master Crepes' },
+    ],
+    problems: [
+      { title: 'Catering genérico y sin personalidad', body: 'Bufés aburridos que nadie recuerda al día siguiente y que no reflejan la importancia del evento.' },
+      { title: 'Proveedores que fallan en el momento clave', body: 'Comida fría, llegada tarde o personal sin profesionalismo que arruina la reputación del anfitrión.' },
+      { title: 'Sin el WOW factor que todo evento necesita', body: 'Cuando el catering no genera conversación ni fotos, el evento se vuelve uno más del montón.' },
+    ],
+    methodology: [
+      { num: '01', icon: 'fa-solid fa-clipboard-list', title: 'Diseño del Menú Personalizado', body: 'Creamos el menú perfecto para tu evento según el tipo de celebración, número de invitados y preferencias.' },
+      { num: '02', icon: 'fa-solid fa-truck', title: 'Logística y Coordinación', body: 'Nos encargamos de todo: instalación, equipo, ingredientes y personal para que tú no te preocupes por nada.' },
+      { num: '03', icon: 'fa-solid fa-fire-burner', title: 'Servicio en Vivo el Día del Evento', body: 'Nuestros crepe-makers elaboran las crepes al momento frente a tus invitados, creando una experiencia única.' },
+    ],
+    creds: [
+      'Especialista en crepes francesas auténticas',
+      'Catering para eventos corporativos y bodas',
+      'Servicio en vivo: experiencia visual y gastronómica',
+    ],
   },
-  {
-    icon: 'fa-solid fa-star',
-    number: '500+',
-    text: 'Eventos exitosos: corporativos, bodas y celebraciones',
+  en: {
+    urgencyBanner: 'Limited spots — expiring in:',
+    eyebrow: 'Premium French Crêpe Catering',
+    headline1: 'Turn your event into a gastronomic experience',
+    headline2: 'your guests will never forget',
+    vslCaption: 'Discover how Alejandro Moreno transforms ordinary events into extraordinary gastronomic experiences',
+    ctaBtn: 'REQUEST A FREE QUOTE',
+    ctaSub: '100% free · No commitment · Limited spots',
+    statsLabel: 'Real results — real events',
+    problemLabel: 'Can you relate?',
+    problemTitle: 'What ruins the most important events',
+    methodLabel: 'Our catering methodology',
+    methodTitle: 'Three steps to a perfect event',
+    testimonialLabel: 'What our clients say',
+    testimonialText: '"Master Crepes catering was the soul of our corporate party. Watching them make crêpes live was everyone\'s favorite moment. Alejandro and his team exceeded all our expectations."',
+    testimonialAuthor: 'Human Resources Manager',
+    testimonialRole: 'Multinational company — Corporate event, 200 guests',
+    authorityEyebrow: 'Your catering specialist',
+    authorityRole: 'Founder & Executive Chef — Master Crepes',
+    authorityBio: 'With over 8 years of experience in premium catering, Alejandro Moreno is the leading expert in authentic French crêpes for high-end events. He has transformed hundreds of corporate celebrations, weddings, and galas into memorable gastronomic experiences his clients talk about for years.',
+    ctaFinalTitle: 'Does your event deserve the best?',
+    ctaFinalSub: 'Request a free, personalized quote. We\'ll talk about your event, number of guests, and design the perfect menu for you.',
+    privacyLink: 'Privacy Policy',
+    legalLink: 'Legal Notice',
+    footerCopy: 'All rights reserved.',
+    pillars: [
+      'No boring catering that disappoints your guests',
+      'No vendors who fail on the day of the event',
+      'No generic menus that impress nobody',
+      'Fresh French crêpes prepared live in front of your guests',
+    ],
+    stats: [
+      { icon: 'fa-solid fa-utensils', number: '8+', text: 'Years offering premium catering at high-end events' },
+      { icon: 'fa-solid fa-star', number: '500+', text: 'Successful events: corporate, weddings, and celebrations' },
+      { icon: 'fa-solid fa-heart', number: '98%', text: 'Of clients would hire Master Crepes catering again' },
+    ],
+    problems: [
+      { title: 'Generic catering with no personality', body: "Boring buffets nobody remembers the next day, that fail to reflect the importance of the event." },
+      { title: 'Vendors who fail at the critical moment', body: "Cold food, late arrivals, or unprofessional staff that ruins the host's reputation." },
+      { title: 'Missing the WOW factor every event needs', body: "When catering doesn't spark conversation or photos, the event becomes just another forgettable night." },
+    ],
+    methodology: [
+      { num: '01', icon: 'fa-solid fa-clipboard-list', title: 'Custom Menu Design', body: "We create the perfect menu for your event based on the type of celebration, number of guests, and preferences." },
+      { num: '02', icon: 'fa-solid fa-truck', title: 'Logistics & Coordination', body: "We handle everything: setup, equipment, ingredients, and staff so you don't have to worry about a thing." },
+      { num: '03', icon: 'fa-solid fa-fire-burner', title: 'Live Service on Event Day', body: "Our crêpe makers prepare fresh crêpes right in front of your guests, creating a truly unique experience." },
+    ],
+    creds: [
+      'Specialist in authentic French crêpes',
+      'Catering for corporate events and weddings',
+      'Live service: visual and gastronomic experience',
+    ],
   },
-  {
-    icon: 'fa-solid fa-heart',
-    number: '98%',
-    text: 'De los clientes repetiría el catering con Master Crepes',
-  },
-]
+}
 
-const pillars = [
-  'Sin catering aburrido que desanima a los invitados',
-  'Sin proveedores que fallan el día del evento',
-  'Sin menús genéricos que no impresionan a nadie',
-  'Con crepes francesas elaboradas al momento frente a tus invitados',
-]
-
-const methodology = [
-  {
-    num: '01',
-    icon: 'fa-solid fa-clipboard-list',
-    title: 'Diseño del Menú Personalizado',
-    body: 'Creamos el menú perfecto para tu evento según el tipo de celebración, número de invitados y preferencias.',
-  },
-  {
-    num: '02',
-    icon: 'fa-solid fa-truck',
-    title: 'Logística y Coordinación',
-    body: 'Nos encargamos de todo: instalación, equipo, ingredientes y personal para que tú no te preocupes por nada.',
-  },
-  {
-    num: '03',
-    icon: 'fa-solid fa-fire-burner',
-    title: 'Servicio en Vivo el Día del Evento',
-    body: 'Nuestros crepe-makers elaboran las crepes al momento frente a tus invitados, creando una experiencia única.',
-  },
-]
+const t = computed(() => tr[lang.value])
+const pillars = computed(() => t.value.pillars)
+const stats = computed(() => t.value.stats)
+const methodology = computed(() => t.value.methodology)
 
 // Countdown urgency (24h rolling)
 const hours = ref('23')
@@ -97,7 +163,7 @@ onUnmounted(() => clearInterval(interval))
     <!-- URGENCY BANNER -->
     <div class="funnel__urgency" role="banner">
       <span class="funnel__urgency-dot" aria-hidden="true" />
-      <span>Cupos limitados — expiran en:</span>
+      <span>{{ t.urgencyBanner }}</span>
       <div class="funnel__timer" aria-live="polite" aria-label="Tiempo restante">
         <span class="funnel__timer-block"><strong>{{ hours }}</strong><small>h</small></span>
         <span class="funnel__timer-sep" aria-hidden="true">:</span>
@@ -113,12 +179,12 @@ onUnmounted(() => clearInterval(interval))
 
         <p class="funnel__eyebrow">
           <i class="fa-solid fa-utensils" aria-hidden="true"></i>
-          Catering Premium de Crepes Francesas
+          {{ t.eyebrow }}
         </p>
 
         <h1 id="funnel-headline" class="funnel__headline">
-          Convierte tu evento en una experiencia gastronómica
-          <span class="funnel__headline-accent">que tus invitados nunca olvidarán</span>
+          {{ t.headline1 }}
+          <span class="funnel__headline-accent">{{ t.headline2 }}</span>
         </h1>
 
         <ul class="funnel__pillars" role="list">
@@ -139,7 +205,7 @@ onUnmounted(() => clearInterval(interval))
               <div class="funnel__vsl-play">
                 <i class="fa-solid fa-play" aria-hidden="true"></i>
               </div>
-              <p class="funnel__vsl-caption">Descubre cómo Alejandro Moreno transforma eventos ordinarios en experiencias gastronómicas extraordinarias</p>
+              <p class="funnel__vsl-caption">{{ t.vslCaption }}</p>
             </div>
           </div>
         </div>
@@ -148,11 +214,11 @@ onUnmounted(() => clearInterval(interval))
         <div class="funnel__cta-wrap">
           <button class="funnel__cta-btn" @click="openModal()">
             <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
-            SOLICITAR COTIZACIÓN GRATUITA
+            {{ t.ctaBtn }}
           </button>
           <p class="funnel__cta-sub">
             <i class="fa-solid fa-lock" aria-hidden="true"></i>
-            100% gratuito &nbsp;·&nbsp; Sin compromiso &nbsp;·&nbsp; Cupos limitados
+            {{ t.ctaSub }}
           </p>
         </div>
 
@@ -162,7 +228,7 @@ onUnmounted(() => clearInterval(interval))
     <!-- STATS -->
     <section class="funnel__stats" aria-label="Resultados comprobados">
       <div class="funnel__container">
-        <p class="funnel__section-label funnel__section-label--light">Resultados reales — eventos reales</p>
+        <p class="funnel__section-label funnel__section-label--light">{{ t.statsLabel }}</p>
         <div class="funnel__stats-grid">
           <div v-for="stat in stats" :key="stat.number" class="funnel__stat">
             <div class="funnel__stat-icon" aria-hidden="true">
@@ -178,30 +244,14 @@ onUnmounted(() => clearInterval(interval))
     <!-- PROBLEMA -->
     <section class="funnel__problem" aria-labelledby="problem-heading">
       <div class="funnel__container">
-        <p class="funnel__section-label">¿Te identificas con esto?</p>
-        <h2 id="problem-heading" class="funnel__section-title">
-          Lo que arruina los eventos más importantes
-        </h2>
+        <p class="funnel__section-label">{{ t.problemLabel }}</p>
+        <h2 id="problem-heading" class="funnel__section-title">{{ t.problemTitle }}</h2>
         <div class="funnel__problem-grid">
-          <div class="funnel__problem-item">
+          <div v-for="problem in t.problems" :key="problem.title" class="funnel__problem-item">
             <i class="fa-solid fa-triangle-exclamation funnel__problem-icon" aria-hidden="true"></i>
             <div>
-              <strong>Catering genérico y sin personalidad</strong>
-              <p>Bufés aburridos que nadie recuerda al día siguiente y que no reflejan la importancia del evento.</p>
-            </div>
-          </div>
-          <div class="funnel__problem-item">
-            <i class="fa-solid fa-triangle-exclamation funnel__problem-icon" aria-hidden="true"></i>
-            <div>
-              <strong>Proveedores que fallan en el momento clave</strong>
-              <p>Comida fría, llegada tarde o personal sin profesionalismo que arruina la reputación del anfitrión.</p>
-            </div>
-          </div>
-          <div class="funnel__problem-item">
-            <i class="fa-solid fa-triangle-exclamation funnel__problem-icon" aria-hidden="true"></i>
-            <div>
-              <strong>Sin el WOW factor que todo evento necesita</strong>
-              <p>Cuando el catering no genera conversación ni fotos, el evento se vuelve uno más del montón.</p>
+              <strong>{{ problem.title }}</strong>
+              <p>{{ problem.body }}</p>
             </div>
           </div>
         </div>
@@ -211,10 +261,8 @@ onUnmounted(() => clearInterval(interval))
     <!-- METODOLOGÍA -->
     <section class="funnel__method" aria-labelledby="method-heading">
       <div class="funnel__container">
-        <p class="funnel__section-label">Nuestra metodología de catering</p>
-        <h2 id="method-heading" class="funnel__section-title">
-          Tres pasos para un evento perfecto
-        </h2>
+        <p class="funnel__section-label">{{ t.methodLabel }}</p>
+        <h2 id="method-heading" class="funnel__section-title">{{ t.methodTitle }}</h2>
         <div class="funnel__method-grid">
           <div v-for="m in methodology" :key="m.num" class="funnel__method-card">
             <div class="funnel__method-num" aria-hidden="true">{{ m.num }}</div>
@@ -231,21 +279,17 @@ onUnmounted(() => clearInterval(interval))
     <!-- TESTIMONIAL -->
     <section class="funnel__testimonial" aria-labelledby="testimonial-heading">
       <div class="funnel__container">
-        <p class="funnel__section-label">Lo que dicen nuestros clientes</p>
+        <p class="funnel__section-label">{{ t.testimonialLabel }}</p>
         <div class="funnel__testimonial-card">
           <i class="fa-solid fa-quote-left funnel__testimonial-quote" aria-hidden="true"></i>
-          <blockquote class="funnel__testimonial-text">
-            "El catering de Master Crepes fue el alma de nuestra fiesta corporativa.
-            Ver cómo preparaban las crepes en vivo fue el momento favorito de todos.
-            Alejandro y su equipo superaron todas nuestras expectativas."
-          </blockquote>
+          <blockquote class="funnel__testimonial-text">{{ t.testimonialText }}</blockquote>
           <footer class="funnel__testimonial-author">
             <div class="funnel__testimonial-avatar" aria-hidden="true">
               <i class="fa-solid fa-user"></i>
             </div>
             <div>
-              <strong>Gerente de Recursos Humanos</strong>
-              <span>Empresa multinacional — Evento corporativo 200 personas</span>
+              <strong>{{ t.testimonialAuthor }}</strong>
+              <span>{{ t.testimonialRole }}</span>
             </div>
           </footer>
         </div>
@@ -261,19 +305,14 @@ onUnmounted(() => clearInterval(interval))
           </div>
         </div>
         <div class="funnel__authority-content">
-          <p class="funnel__authority-eyebrow">Tu especialista en catering</p>
+          <p class="funnel__authority-eyebrow">{{ t.authorityEyebrow }}</p>
           <h2 id="authority-heading" class="funnel__authority-name">Alejandro Moreno</h2>
-          <p class="funnel__authority-role">Fundador y Chef Ejecutivo — Master Crepes</p>
-          <p class="funnel__authority-bio">
-            Con más de 8 años de experiencia en catering premium, Alejandro Moreno es el referente
-            de las crepes francesas auténticas para eventos de alto nivel. Ha transformado cientos
-            de celebraciones corporativas, bodas y galas en experiencias gastronómicas memorables
-            que sus clientes recuerdan por años.
-          </p>
+          <p class="funnel__authority-role">{{ t.authorityRole }}</p>
+          <p class="funnel__authority-bio">{{ t.authorityBio }}</p>
           <ul class="funnel__authority-creds" role="list">
-            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Especialista en crepes francesas auténticas</li>
-            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Catering para eventos corporativos y bodas</li>
-            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Servicio en vivo: experiencia visual y gastronómica</li>
+            <li v-for="cred in t.creds" :key="cred">
+              <i class="fa-solid fa-check-circle" aria-hidden="true"></i> {{ cred }}
+            </li>
           </ul>
         </div>
       </div>
@@ -282,20 +321,15 @@ onUnmounted(() => clearInterval(interval))
     <!-- CTA FINAL -->
     <section class="funnel__cta-final" aria-labelledby="cta-final-heading">
       <div class="funnel__container">
-        <h2 id="cta-final-heading" class="funnel__cta-final-title">
-          ¿Tu evento merece lo mejor?
-        </h2>
-        <p class="funnel__cta-final-sub">
-          Solicita una cotización gratuita y personalizada. Conversaremos sobre tu evento,
-          el número de invitados y diseñaremos el menú perfecto para ti.
-        </p>
+        <h2 id="cta-final-heading" class="funnel__cta-final-title">{{ t.ctaFinalTitle }}</h2>
+        <p class="funnel__cta-final-sub">{{ t.ctaFinalSub }}</p>
         <button class="funnel__cta-btn" @click="openModal()">
           <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
-          SOLICITAR COTIZACIÓN GRATUITA
+          {{ t.ctaBtn }}
         </button>
         <p class="funnel__cta-sub">
           <i class="fa-solid fa-lock" aria-hidden="true"></i>
-          100% gratuito &nbsp;·&nbsp; Sin compromiso &nbsp;·&nbsp; Cupos limitados
+          {{ t.ctaSub }}
         </p>
       </div>
     </section>
@@ -305,11 +339,11 @@ onUnmounted(() => clearInterval(interval))
       <div class="funnel__container funnel__footer-inner">
         <h2 class="funnel__footer-logo-text">MASTER CREPES</h2>
         <nav class="funnel__footer-links" aria-label="Legal">
-          <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
-          <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
+          <RouterLink to="/politicas-privacidad">{{ t.privacyLink }}</RouterLink>
+          <RouterLink to="/aviso-legal">{{ t.legalLink }}</RouterLink>
         </nav>
         <p class="funnel__footer-copy">
-          © {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.
+          © {{ new Date().getFullYear() }} MASTER CREPES. {{ t.footerCopy }}
         </p>
       </div>
     </footer>

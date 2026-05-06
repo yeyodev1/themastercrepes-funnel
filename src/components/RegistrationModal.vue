@@ -1,9 +1,54 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { parsePhoneNumberFromString, getCountries, getCountryCallingCode, AsYouType } from 'libphonenumber-js'
-import { useRouter } from 'vue-router'
 import { getStoredFbParams } from '@/utils/fbclid'
-const router = useRouter()
+import { useLangRouter } from '@/composables/useLangRouter'
+
+const { lang, push } = useLangRouter()
+
+const rmtr = {
+  es: {
+    eyebrow: 'Cotización de catering gratuita',
+    title: 'Agenda tu sesión',
+    titleAccent: 'sin costo',
+    subtitle: 'Cupos limitados — completa tus datos y te daremos acceso al video.',
+    firstName: 'Nombre', firstNamePh: 'Juan',
+    lastName: 'Apellido', lastNamePh: 'Pérez',
+    email: 'Correo electrónico', emailPh: 'juan@empresa.com',
+    phone: 'Teléfono',
+    company: 'Empresa u organizador del evento', companyPh: 'Ej: Mi empresa, ABC Corp',
+    countrySearch: 'Buscar país...',
+    submit: 'VER EL VIDEO GRATIS',
+    submitting: 'Enviando...',
+    legal: '100% gratuito · Sin compromiso · Tus datos están seguros',
+    errNombre: 'Ingresa tu nombre',
+    errApellido: 'Ingresa tu apellido',
+    errEmail: 'Email inválido',
+    errPhone: 'Número inválido para el país seleccionado',
+    errEmpresa: 'Ingresa el nombre de tu empresa u organizador',
+  },
+  en: {
+    eyebrow: 'Free catering quote',
+    title: 'Schedule your session',
+    titleAccent: 'at no cost',
+    subtitle: 'Limited spots — complete your details and we\'ll give you access to the video.',
+    firstName: 'First name', firstNamePh: 'John',
+    lastName: 'Last name', lastNamePh: 'Smith',
+    email: 'Email address', emailPh: 'john@company.com',
+    phone: 'Phone',
+    company: 'Company or event organizer', companyPh: 'e.g. My Company, ABC Corp',
+    countrySearch: 'Search country...',
+    submit: 'WATCH THE FREE VIDEO',
+    submitting: 'Sending...',
+    legal: '100% free · No commitment · Your data is safe',
+    errNombre: 'Enter your first name',
+    errApellido: 'Enter your last name',
+    errEmail: 'Invalid email',
+    errPhone: 'Invalid number for the selected country',
+    errEmpresa: 'Enter your company or event organizer name',
+  },
+}
+const rmt = computed(() => rmtr[lang.value])
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
@@ -83,11 +128,11 @@ const parsedPhoneE164 = computed(() => {
 
 // ── Validaciones ──────────────────────────────────────────────────────────────
 const validators: Record<string, (v: string) => string | null> = {
-  nombre: v => v.trim().length < 2 ? 'Ingresa tu nombre' : null,
-  apellido: v => v.trim().length < 2 ? 'Ingresa tu apellido' : null,
-  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? null : 'Email inválido',
-  phone: () => phoneValid.value ? null : 'Número inválido para el país seleccionado',
-  empresa: v => v.trim().length < 2 ? 'Ingresa el nombre de tu empresa u organizador' : null,
+  nombre: v => v.trim().length < 2 ? rmt.value.errNombre : null,
+  apellido: v => v.trim().length < 2 ? rmt.value.errApellido : null,
+  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? null : rmt.value.errEmail,
+  phone: () => phoneValid.value ? null : rmt.value.errPhone,
+  empresa: v => v.trim().length < 2 ? rmt.value.errEmpresa : null,
 }
 
 const validate = () => {
@@ -144,6 +189,14 @@ const handleSubmit = async () => {
   // event_id compartido entre Pixel y CAPI para deduplicación
   const leadEventId = `lead_${Date.now()}_${Math.random().toString(36).slice(2)}`
 
+  const currentLang = lang.value
+  const etiquetas = [
+    'funnel-mastercrepes',
+    'step-1-registro',
+    `idioma-${currentLang}`,
+    'source-web',
+  ].join(',')
+
   const payload = {
     nombre: form.value.nombre.trim(),
     apellido: form.value.apellido.trim(),
@@ -152,6 +205,8 @@ const handleSubmit = async () => {
     telefonoDisplay: selectedCountry.value.dial + ' ' + formattedPhone.value,
     empresa: form.value.empresa.trim(),
     pais: selectedCountry.value.name,
+    idioma: currentLang,
+    etiquetas,
     timestamp: new Date().toISOString(),
     event_id: leadEventId,
     ...getStoredFbParams(),
@@ -183,7 +238,7 @@ const handleSubmit = async () => {
   }))
   ;(window as any).fbq?.('track', 'CompleteRegistration')
   emit('close')
-  router.push('/ver-video')
+  push('/ver-video')
 }
 
 // ── Keyboard trap ─────────────────────────────────────────────────────────────
@@ -229,21 +284,21 @@ watch(dropdownOpen, open => {
 
           <!-- ── FORMULARIO ─────────────────────────────────── -->
           <!-- ── FORMULARIO ─────────────────────────────────── -->
-            <p class="rmodal__eyebrow">Cotización de catering gratuita</p>
-            <h2 id="rmodal-title" class="rmodal__title">Agenda tu sesión<br><span class="rmodal__title-accent">sin costo</span></h2>
-            <p class="rmodal__subtitle">Cupos limitados — completa tus datos y te daremos acceso al video.</p>
+            <p class="rmodal__eyebrow">{{ rmt.eyebrow }}</p>
+            <h2 id="rmodal-title" class="rmodal__title">{{ rmt.title }}<br><span class="rmodal__title-accent">{{ rmt.titleAccent }}</span></h2>
+            <p class="rmodal__subtitle">{{ rmt.subtitle }}</p>
 
             <form class="rmodal__form" @submit.prevent="handleSubmit" novalidate>
 
               <!-- Nombre + Apellido -->
               <div class="rmodal__row">
                 <div class="rmodal__field" :class="{ 'has-error': touched.nombre && errors.nombre }">
-                  <label for="r-nombre">Nombre</label>
+                  <label for="r-nombre">{{ rmt.firstName }}</label>
                   <input
                     id="r-nombre"
                     v-model="form.nombre"
                     type="text"
-                    placeholder="Juan"
+                    :placeholder="rmt.firstNamePh"
                     autocomplete="given-name"
                     @blur="onBlur('nombre')"
                   />
@@ -251,12 +306,12 @@ watch(dropdownOpen, open => {
                 </div>
 
                 <div class="rmodal__field" :class="{ 'has-error': touched.apellido && errors.apellido }">
-                  <label for="r-apellido">Apellido</label>
+                  <label for="r-apellido">{{ rmt.lastName }}</label>
                   <input
                     id="r-apellido"
                     v-model="form.apellido"
                     type="text"
-                    placeholder="Pérez"
+                    :placeholder="rmt.lastNamePh"
                     autocomplete="family-name"
                     @blur="onBlur('apellido')"
                   />
@@ -266,7 +321,7 @@ watch(dropdownOpen, open => {
 
               <!-- Email -->
               <div class="rmodal__field" :class="{ 'has-error': touched.email && errors.email }">
-                <label for="r-email">Correo electrónico</label>
+                <label for="r-email">{{ rmt.email }}</label>
                 <input
                   id="r-email"
                   v-model="form.email"
@@ -305,8 +360,8 @@ watch(dropdownOpen, open => {
                         type="text"
                         class="rmodal__country-search"
                         v-model="countrySearch"
-                        placeholder="Buscar país..."
-                        aria-label="Buscar país"
+                        :placeholder="rmt.countrySearch"
+                        :aria-label="rmt.countrySearch"
                       />
                       <ul>
                         <li
@@ -361,12 +416,12 @@ watch(dropdownOpen, open => {
 
               <!-- Empresa -->
               <div class="rmodal__field" :class="{ 'has-error': touched.empresa && errors.empresa }">
-                <label for="r-empresa">Empresa u organizador del evento</label>
+                <label for="r-empresa">{{ rmt.company }}</label>
                 <input
                   id="r-empresa"
                   v-model="form.empresa"
                   type="text"
-                  placeholder="Ej: Mi empresa, ABC Corp"
+                  :placeholder="rmt.companyPh"
                   autocomplete="organization"
                   @blur="onBlur('empresa')"
                 />
@@ -383,14 +438,14 @@ watch(dropdownOpen, open => {
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </template>
-                {{ submitting ? 'Enviando...' : 'VER EL VIDEO GRATIS' }}
+                {{ submitting ? rmt.submitting : rmt.submit }}
               </button>
 
               <p class="rmodal__legal">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                 </svg>
-                100% gratuito · Sin compromiso · Tus datos están seguros
+                {{ rmt.legal }}
               </p>
 
             </form>
