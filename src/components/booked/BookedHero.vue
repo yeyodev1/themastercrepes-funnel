@@ -50,8 +50,8 @@ onMounted(() => {
     </h1>
     
     <p class="booked-hero__subtitle animate-up">
-      En breve recibirás un correo con todos los detalles. Un miembro del equipo de
-      Bakano te contactará para ayudarte a romperla en tu negocio.
+      En breve recibirás un correo con todos los detalles. Alejandro Moreno
+      te contactará para coordinar los próximos pasos de tu catering.
     </p>
   </section>
 </template>

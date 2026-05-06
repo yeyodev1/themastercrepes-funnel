@@ -3,7 +3,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import CalendarModal from '@/components/CalendarModal.vue'
 import { trackStage, generateEventId } from '@/utils/ghl'
 import { useContactStore } from '@/stores/contact'
-import alePhoto from '@/assets/team/ale-barreto.png'
 
 const contactStore = useContactStore()
 
@@ -101,7 +100,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 
     <!-- Top bar -->
     <header class="vv-topbar">
-      <h2 class="vv-topbar__logo-text">ALE BARRETO</h2>
+      <h2 class="vv-topbar__logo-text">MASTER CREPES</h2>
     </header>
 
     <!-- Main content -->
@@ -119,22 +118,22 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
       <!-- Headline -->
       <section class="vv-headline">
         <p class="vv-eyebrow">
-          <i class="fa-solid fa-tree" aria-hidden="true"></i>
+          <i class="fa-solid fa-utensils" aria-hidden="true"></i>
           Antes de agendar
         </p>
         <h1 class="vv-h1">
-          Descubre por qué los proyectos de lujo
-          <span class="vv-accent">eligen a Ale Barreto</span>
+          Descubre por qué los mejores eventos
+          <span class="vv-accent">eligen a Master Crepes</span>
         </h1>
         <p class="vv-subtitle">
-          Ve el video completo. Ale Barreto te explica cómo transformamos espacios con la nobleza de la madera.
+          Ve el video completo. Alejandro Moreno te explica cómo transformamos eventos ordinarios en experiencias gastronómicas extraordinarias.
         </p>
       </section>
 
       <!-- Wistia video embed -->
       <div class="vv-video-wrapper">
         <div class="vv-video-ratio">
-          <wistia-player media-id="5ql8l131me" aspect="1.7777777777777777"></wistia-player>
+          <wistia-player media-id="88xzla80cy" aspect="1.7777777777777777"></wistia-player>
         </div>
       </div>
 
@@ -159,7 +158,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
           @click="calendarOpen = true"
         >
           <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
-          AGENDAR MI ASESORÍA DE DISEÑO
+          SOLICITAR MI PROPUESTA DE CATERING
         </button>
 
         <p class="vv-cta-sub">
@@ -173,22 +172,22 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
         <div class="vv-authority__inner">
           <div class="vv-authority__photo-wrap">
             <div class="vv-authority__avatar" aria-hidden="true">
-              <img :src="alePhoto" alt="Ale Barreto" class="vv-authority__img" />
+              <i class="fa-solid fa-utensils" style="color:rgba(255,255,255,0.85);font-size:2rem;"></i>
             </div>
           </div>
           <div class="vv-authority__content">
-            <p class="vv-authority__eyebrow">Tu especialista asignada</p>
-            <h2 id="authority-heading" class="vv-authority__name">Ale Barreto</h2>
-            <p class="vv-authority__role">Experta en Diseño y Construcción en Madera</p>
+            <p class="vv-authority__eyebrow">Tu especialista en catering</p>
+            <h2 id="authority-heading" class="vv-authority__name">Alejandro Moreno</h2>
+            <p class="vv-authority__role">Fundador y Chef Ejecutivo — Master Crepes</p>
             <p class="vv-authority__bio">
-              Con años de experiencia en el mercado ecuatoriano, me especializo en crear
-              espacios que combinan la nobleza de la madera con diseños modernos y funcionales.
-              Mi objetivo es que cada proyecto sea una inversión que dure toda la vida.
+              Con más de 8 años de experiencia en catering premium, Alejandro Moreno es el referente
+              de las crepes francesas auténticas para eventos de alto nivel. Ha transformado cientos
+              de celebraciones en experiencias gastronómicas memorables que sus clientes recuerdan por años.
             </p>
             <ul class="vv-authority__creds" role="list">
-              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Especialista en maderas nobles y tratadas</li>
-              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Diseños exclusivos a medida</li>
-              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Gestión integral: del plano a la instalación</li>
+              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Especialista en crepes francesas auténticas</li>
+              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Catering para eventos corporativos y bodas</li>
+              <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Servicio en vivo: experiencia visual y gastronómica</li>
             </ul>
           </div>
         </div>
@@ -202,7 +201,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
         <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
         <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
       </nav>
-      <p class="vv-footer__copy">© {{ new Date().getFullYear() }} ALE BARRETO. Todos los derechos reservados.</p>
+      <p class="vv-footer__copy">© {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.</p>
     </footer>
 
   </div>
@@ -216,11 +215,11 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
       <div v-if="captureOpen" class="capture-overlay" role="dialog" aria-modal="true" aria-labelledby="capture-title">
         <div class="capture-modal">
           <div class="capture-modal__header">
-            <h2 class="capture-modal__logo-text">ALE BARRETO</h2>
+            <h2 class="capture-modal__logo-text">MASTER CREPES</h2>
             <h2 id="capture-title" class="capture-modal__title">
               Antes de ver el video, <span>confirma tus datos</span>
             </h2>
-            <p class="capture-modal__sub">Para personalizar tu asesoría de diseño</p>
+            <p class="capture-modal__sub">Para personalizar tu propuesta de catering</p>
           </div>
           <form class="capture-modal__form" @submit.prevent="submitCapture" novalidate>
             <div class="capture-row">
@@ -236,8 +235,8 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
               </div>
             </div>
             <div class="capture-field" :class="{ error: captureTouched.empresa && captureErrors.empresa }">
-              <label>Tu proyecto</label>
-              <input v-model="captureForm.empresa" type="text" placeholder="Ej: Remodelación Sala" @blur="captureTouched.empresa = true" />
+              <label>Empresa u organizador</label>
+              <input v-model="captureForm.empresa" type="text" placeholder="Ej: Mi empresa, ABC Corp" @blur="captureTouched.empresa = true" />
               <span v-if="captureTouched.empresa && captureErrors.empresa" class="capture-field__error">{{ captureErrors.empresa }}</span>
             </div>
             <div class="capture-field" :class="{ error: captureTouched.email && captureErrors.email }">
@@ -393,7 +392,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
     height: 100%;
 
     &:not(:defined) {
-      background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/5ql8l131me/swatch');
+      background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/88xzla80cy/swatch');
       display: block;
       filter: blur(5px);
       padding-top: 56.25%;

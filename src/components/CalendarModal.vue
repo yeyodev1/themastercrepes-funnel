@@ -15,26 +15,26 @@ const submitting = ref(false)
 const touched = ref(false)
 
 const form = ref({
-  sector: '',
-  embarcaciones: '',
-  hp: '',
+  tipo_evento: '',
+  invitados: '',
+  fecha: '',
   presupuesto: '',
-  reto: '',
+  descripcion: '',
   consent: false,
 })
 
 const wordCount = (s: string) => s.trim().split(/\s+/).filter(Boolean).length
 
 const isValid = () =>
-  !!form.value.sector &&
-  !!form.value.embarcaciones &&
-  !!form.value.hp &&
+  !!form.value.tipo_evento &&
+  !!form.value.invitados &&
+  !!form.value.fecha &&
   !!form.value.presupuesto &&
-  wordCount(form.value.reto) >= 10 &&
+  wordCount(form.value.descripcion) >= 10 &&
   form.value.consent
 
 const qualifies = () => {
-  if (form.value.presupuesto === 'menos1200') return false
+  if (form.value.presupuesto === 'menos500') return false
   return true
 }
 
@@ -47,54 +47,57 @@ const handleSubmit = async () => {
   const califica = qualifies()
   const scheduleEventId = generateEventId('schedule')
 
-  const sectorLabel: Record<string, string> = {
-    residencial: 'Proyecto residencial (Casa/Depto)',
-    comercial:   'Proyecto comercial (Local/Oficina)',
-    nautico:     'Proyecto náutico (Interiores yates)',
-    otro:        'Otro proyecto',
+  const tipoEventoLabel: Record<string, string> = {
+    corporativo: 'Evento corporativo (empresa)',
+    boda:        'Boda o celebración',
+    cumpleanos:  'Cumpleaños o reunión familiar',
+    gala:        'Gala o evento social',
+    otro:        'Otro evento',
   }
-  const embarcacionesLabel: Record<string, string> = {
-    'cuarto': 'Habitación o espacio único',
-    'casa':   'Casa o departamento completo',
-    'local':  'Local comercial u oficina',
-    'yate':   'Embarcación o yate',
+  const invitadosLabel: Record<string, string> = {
+    menos50:   'Menos de 50 personas',
+    '50-150':  '50 a 150 personas',
+    '150-300': '150 a 300 personas',
+    mas300:    'Más de 300 personas',
   }
-  const hpLabel: Record<string, string> = {
-    rustico:   'Rústico / Natural',
-    moderno:   'Moderno / Lujoso',
-    industrial: 'Industrial / Vintage',
+  const fechaLabel: Record<string, string> = {
+    proximo_mes:     'En el próximo mes',
+    proximos_3meses: 'En los próximos 3 meses',
+    proximos_6meses: 'En los próximos 6 meses',
+    planificando:    'Estoy en planificación',
   }
   const presupuestoLabel: Record<string, string> = {
-    menos1200: 'Menos de $1,200 USD',
-    mas1200:   'Al menos $1,200 USD',
-    mas2000:   'Más de $2,000 USD',
+    menos500:    'Menos de $500 USD',
+    '500-1500':  '$500 - $1,500 USD',
+    '1500-5000': '$1,500 - $5,000 USD',
+    mas5000:     'Más de $5,000 USD',
   }
 
   const etiquetas = [
-    'funnel-alebarreto',
+    'funnel-mastercrepes',
     'step-2-cualificacion',
-    califica ? 'califica-ab' : 'no-califica-ab',
-    `tipo-${form.value.sector}`,
-    `espacio-${form.value.embarcaciones}`,
-    `estilo-${form.value.hp}`,
+    califica ? 'califica-mc' : 'no-califica-mc',
+    `tipo-${form.value.tipo_evento}`,
+    `invitados-${form.value.invitados}`,
+    `fecha-${form.value.fecha}`,
     `budget-${form.value.presupuesto}`,
   ]
 
   const notas = `
 ━━━━━━━━━━━━━━━━━━━━━━━━
-🪵 ALE BARRETO — Cualificación
+🥞 MASTER CREPES — Cualificación
 ━━━━━━━━━━━━━━━━━━━━━━━━
 👤 ${contact.nombre} ${contact.apellido}
 📧 ${contact.email}
 📱 ${contact.telefono}
 ━━━━━━━━━━━━━━━━━━━━━━━━
-🏠 Tipo: ${sectorLabel[form.value.sector] ?? form.value.sector}
-📐 Espacio: ${embarcacionesLabel[form.value.embarcaciones] ?? form.value.embarcaciones}
-🎨 Estilo: ${hpLabel[form.value.hp] ?? form.value.hp}
+🎉 Tipo de evento: ${tipoEventoLabel[form.value.tipo_evento] ?? form.value.tipo_evento}
+👥 Invitados: ${invitadosLabel[form.value.invitados] ?? form.value.invitados}
+📅 Cuándo: ${fechaLabel[form.value.fecha] ?? form.value.fecha}
 💰 Presupuesto: ${presupuestoLabel[form.value.presupuesto] ?? form.value.presupuesto}
-💡 Idea/Reto: ${form.value.reto}
+💡 Descripción: ${form.value.descripcion}
 ━━━━━━━━━━━━━━━━━━━━━━━━
-${califica ? '✅ CALIFICA' : '❌ NO CALIFICA'}
+${califica ? '✅ CALIFICA' : '❌ NO CALIFICA — presupuesto menor a $500'}
   `.trim()
 
   const payload = {
@@ -102,11 +105,11 @@ ${califica ? '✅ CALIFICA' : '❌ NO CALIFICA'}
     apellido: contact.apellido,
     email: contact.email,
     telefono: contact.telefono,
-    sector: form.value.sector,
-    embarcaciones: form.value.embarcaciones,
-    hp: form.value.hp,
+    tipo_evento: form.value.tipo_evento,
+    invitados: form.value.invitados,
+    fecha: form.value.fecha,
     presupuesto: form.value.presupuesto,
-    reto: form.value.reto,
+    descripcion: form.value.descripcion,
     califica: String(califica),
     etiquetas: etiquetas.join(','),
     notas,
@@ -116,7 +119,6 @@ ${califica ? '✅ CALIFICA' : '❌ NO CALIFICA'}
 
   trackStage('cualificacion_completada', payload)
 
-  // TODO: Actualizar webhook URL para Ale Barreto
   await fetch(import.meta.env.VITE_WEBHOOK_CALIFICACION, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -148,7 +150,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
 watch(() => props.open, (v) => {
   if (v) {
     touched.value = false
-    form.value = { sector: '', embarcaciones: '', hp: '', presupuesto: '', reto: '', consent: false }
+    form.value = { tipo_evento: '', invitados: '', fecha: '', presupuesto: '', descripcion: '', consent: false }
   }
   document.body.style.overflow = v ? 'hidden' : ''
 })
@@ -167,90 +169,93 @@ watch(() => props.open, (v) => {
 
           <div class="cal-header">
             <div class="cal-header-icon" aria-hidden="true">
-              <i class="fa-solid fa-tree"></i>
+              <i class="fa-solid fa-utensils"></i>
             </div>
             <h2 id="cal-title" class="cal-title">
               Antes de agendar, cuéntanos sobre
-              <span class="cal-accent">tu proyecto</span>
+              <span class="cal-accent">tu evento</span>
             </h2>
-            <p class="cal-subtitle">5 preguntas rápidas para entender tu visión — 60 segundos.</p>
+            <p class="cal-subtitle">5 preguntas rápidas para diseñar tu propuesta — 60 segundos.</p>
           </div>
 
           <form class="cal-form" @submit.prevent="handleSubmit" novalidate>
 
-            <!-- Q1 — Tipo de Proyecto -->
-            <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.sector }">
+            <!-- Q1 — Tipo de Evento -->
+            <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.tipo_evento }">
               <legend class="cal-legend">
                 <span class="cal-q-num">01</span>
-                ¿Qué tipo de proyecto estás buscando?
+                ¿Qué tipo de evento estás organizando?
               </legend>
               <div class="cal-options">
                 <label v-for="opt in [
-                  { value: 'residencial', label: 'Residencial (Casa o Departamento)' },
-                  { value: 'comercial', label: 'Comercial (Oficina o Local)' },
-                  { value: 'nautico', label: 'Náutico (Interiores de Embarcación)' },
-                  { value: 'otro', label: 'Otro proyecto' },
-                ]" :key="opt.value" class="cal-option" :class="{ selected: form.sector === opt.value }">
-                  <input type="radio" :value="opt.value" v-model="form.sector" hidden />
+                  { value: 'corporativo', label: 'Evento corporativo (empresa)' },
+                  { value: 'boda',        label: 'Boda o celebración' },
+                  { value: 'cumpleanos',  label: 'Cumpleaños o reunión familiar' },
+                  { value: 'gala',        label: 'Gala o evento social' },
+                  { value: 'otro',        label: 'Otro evento' },
+                ]" :key="opt.value" class="cal-option" :class="{ selected: form.tipo_evento === opt.value }">
+                  <input type="radio" :value="opt.value" v-model="form.tipo_evento" hidden />
                   <span class="cal-option__radio" aria-hidden="true" />
                   <span class="cal-option__label">{{ opt.label }}</span>
                 </label>
               </div>
-              <span v-if="touched && !form.sector" class="cal-error">Selecciona una opción</span>
+              <span v-if="touched && !form.tipo_evento" class="cal-error">Selecciona una opción</span>
             </fieldset>
 
-            <!-- Q2 — Espacio -->
-            <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.embarcaciones }">
+            <!-- Q2 — Número de Invitados -->
+            <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.invitados }">
               <legend class="cal-legend">
                 <span class="cal-q-num">02</span>
-                ¿Para qué espacio principal es el trabajo?
+                ¿Cuántos invitados esperan en el evento?
               </legend>
               <div class="cal-options">
                 <label v-for="opt in [
-                  { value: 'cuarto', label: 'Habitación o espacio único' },
-                  { value: 'casa',   label: 'Casa o departamento completo' },
-                  { value: 'local',  label: 'Local comercial u oficina' },
-                  { value: 'yate',   label: 'Yate o bote' },
-                ]" :key="opt.value" class="cal-option" :class="{ selected: form.embarcaciones === opt.value }">
-                  <input type="radio" :value="opt.value" v-model="form.embarcaciones" hidden />
+                  { value: 'menos50',   label: 'Menos de 50 personas' },
+                  { value: '50-150',    label: '50 a 150 personas' },
+                  { value: '150-300',   label: '150 a 300 personas' },
+                  { value: 'mas300',    label: 'Más de 300 personas' },
+                ]" :key="opt.value" class="cal-option" :class="{ selected: form.invitados === opt.value }">
+                  <input type="radio" :value="opt.value" v-model="form.invitados" hidden />
                   <span class="cal-option__radio" aria-hidden="true" />
                   <span class="cal-option__label">{{ opt.label }}</span>
                 </label>
               </div>
-              <span v-if="touched && !form.embarcaciones" class="cal-error">Selecciona una opción</span>
+              <span v-if="touched && !form.invitados" class="cal-error">Selecciona una opción</span>
             </fieldset>
 
-            <!-- Q3 — Estilo -->
-            <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.hp }">
+            <!-- Q3 — Cuándo es el evento -->
+            <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.fecha }">
               <legend class="cal-legend">
                 <span class="cal-q-num">03</span>
-                ¿Qué estilo de diseño prefiere?
+                ¿Cuándo está planificado tu evento?
               </legend>
               <div class="cal-options">
                 <label v-for="opt in [
-                  { value: 'rustico',   label: 'Rústico / Natural' },
-                  { value: 'moderno',   label: 'Moderno / Lujoso' },
-                  { value: 'industrial', label: 'Industrial / Vintage' },
-                ]" :key="opt.value" class="cal-option" :class="{ selected: form.hp === opt.value }">
-                  <input type="radio" :value="opt.value" v-model="form.hp" hidden />
+                  { value: 'proximo_mes',     label: 'En el próximo mes' },
+                  { value: 'proximos_3meses', label: 'En los próximos 3 meses' },
+                  { value: 'proximos_6meses', label: 'En los próximos 6 meses' },
+                  { value: 'planificando',    label: 'Estoy en planificación' },
+                ]" :key="opt.value" class="cal-option" :class="{ selected: form.fecha === opt.value }">
+                  <input type="radio" :value="opt.value" v-model="form.fecha" hidden />
                   <span class="cal-option__radio" aria-hidden="true" />
                   <span class="cal-option__label">{{ opt.label }}</span>
                 </label>
               </div>
-              <span v-if="touched && !form.hp" class="cal-error">Selecciona una opción</span>
+              <span v-if="touched && !form.fecha" class="cal-error">Selecciona una opción</span>
             </fieldset>
 
             <!-- Q4 — Presupuesto -->
             <fieldset class="cal-fieldset" :class="{ 'has-error': touched && !form.presupuesto }">
               <legend class="cal-legend">
                 <span class="cal-q-num">04</span>
-                ¿Dispone de un presupuesto mayor a $1,200?
+                ¿Cuál es tu presupuesto para el catering?
               </legend>
               <div class="cal-options">
                 <label v-for="opt in [
-                  { value: 'mas2000',   label: 'Sí, cuento con más de $2,000 USD' },
-                  { value: 'mas1200',   label: 'Sí, cuento con al menos $1,200 USD' },
-                  { value: 'menos1200', label: 'No, por ahora menos de $1,200 USD' },
+                  { value: 'mas5000',     label: 'Más de $5,000 USD' },
+                  { value: '1500-5000',   label: '$1,500 - $5,000 USD' },
+                  { value: '500-1500',    label: '$500 - $1,500 USD' },
+                  { value: 'menos500',    label: 'Menos de $500 USD' },
                 ]" :key="opt.value" class="cal-option" :class="{ selected: form.presupuesto === opt.value }">
                   <input type="radio" :value="opt.value" v-model="form.presupuesto" hidden />
                   <span class="cal-option__radio" aria-hidden="true" />
@@ -260,24 +265,24 @@ watch(() => props.open, (v) => {
               <span v-if="touched && !form.presupuesto" class="cal-error">Selecciona una opción</span>
             </fieldset>
 
-            <!-- Q5 — Idea/Reto -->
-            <fieldset class="cal-fieldset" :class="{ 'has-error': touched && wordCount(form.reto) < 10 }">
+            <!-- Q5 — Descripción del evento -->
+            <fieldset class="cal-fieldset" :class="{ 'has-error': touched && wordCount(form.descripcion) < 10 }">
               <legend class="cal-legend">
                 <span class="cal-q-num">05</span>
-                ¿Qué idea tienes en mente para tu espacio?
+                Cuéntanos un poco sobre tu evento
               </legend>
               <textarea
-                v-model="form.reto"
+                v-model="form.descripcion"
                 class="cal-textarea"
-                placeholder="Ej: Me gustaría revestir una pared principal de mi sala con madera noble y añadir una estantería empotrada que combine con..."
+                placeholder="Ej: Estamos organizando una cena corporativa para 80 personas el próximo mes. Queremos una estación de crepes en vivo que sorprenda a nuestros clientes y sea el centro de atención de la noche..."
                 rows="4"
-                aria-describedby="q4-hint"
+                aria-describedby="q5-hint"
               ></textarea>
-              <span id="q4-hint" class="cal-hint">
-                {{ wordCount(form.reto) }}/10 palabras mínimo
+              <span id="q5-hint" class="cal-hint">
+                {{ wordCount(form.descripcion) }}/10 palabras mínimo
               </span>
-              <span v-if="touched && wordCount(form.reto) < 10" class="cal-error">
-                Describe tu idea con al menos 10 palabras
+              <span v-if="touched && wordCount(form.descripcion) < 10" class="cal-error">
+                Describe tu evento con al menos 10 palabras
               </span>
             </fieldset>
 
@@ -286,7 +291,7 @@ watch(() => props.open, (v) => {
               <input type="checkbox" v-model="form.consent" />
               <span class="cal-consent__box" aria-hidden="true" />
               <span class="cal-consent__text">
-                Acepto que Ale Barreto me contacte para brindarme una asesoría de diseño personalizada.
+                Acepto que Master Crepes me contacte para presentarme una propuesta de catering personalizada.
               </span>
             </label>
             <span v-if="touched && !form.consent" class="cal-error">Debes aceptar para continuar</span>
@@ -341,7 +346,7 @@ watch(() => props.open, (v) => {
   overflow-y: auto;
   position: relative;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
-  border: 1px solid #E4EDF7;
+  border: 1px solid #EEE0D0;
 }
 
 .cal-close {
@@ -352,7 +357,7 @@ watch(() => props.open, (v) => {
   height: 32px;
   border-radius: 50%;
   border: none;
-  background: #F5F8FF;
+  background: #FFF8F0;
   color: #8A9BB5;
   cursor: pointer;
   display: flex;
@@ -361,12 +366,12 @@ watch(() => props.open, (v) => {
   font-size: 0.9rem;
   transition: background 0.2s, color 0.2s;
   z-index: 1;
-  &:hover { background: #E4EDF7; color: colors.$OS-DARK; }
+  &:hover { background: #EEE0D0; color: colors.$OS-DARK; }
 }
 
 .cal-header {
   padding: 2rem 2rem 1.25rem;
-  border-bottom: 1px solid #F0F4FB;
+  border-bottom: 1px solid #F0EAE0;
   text-align: center;
 }
 
@@ -450,17 +455,17 @@ watch(() => props.open, (v) => {
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border: 1.5px solid #E4EDF7;
+  border: 1.5px solid #EEE0D0;
   border-radius: 10px;
   cursor: pointer;
   transition: border-color 0.18s, background 0.18s;
-  background: #FAFBFF;
+  background: #FFFAF5;
 
-  &:hover { border-color: colors.$OS-BLUE; background: #F0F6FF; }
+  &:hover { border-color: colors.$OS-BLUE; background: #FFF5EE; }
 
   &.selected {
     border-color: colors.$OS-NAVY;
-    background: #EEF4FF;
+    background: #FFF5EE;
   }
 
   &__radio {
@@ -495,13 +500,13 @@ watch(() => props.open, (v) => {
 
 .cal-textarea {
   width: 100%;
-  border: 1.5px solid #E4EDF7;
+  border: 1.5px solid #EEE0D0;
   border-radius: 10px;
   padding: 0.85rem 1rem;
   font-family: fonts.$font-secondary;
   font-size: 0.88rem;
   color: colors.$OS-DARK;
-  background: #FAFBFF;
+  background: #FFFAF5;
   resize: vertical;
   outline: none;
   transition: border-color 0.18s;
@@ -509,7 +514,7 @@ watch(() => props.open, (v) => {
   box-sizing: border-box;
 
   &::placeholder { color: #B0C0D5; }
-  &:focus { border-color: colors.$OS-BLUE; background: #F5F9FF; }
+  &:focus { border-color: colors.$OS-BLUE; background: #FFF8F0; }
 }
 
 .cal-hint {
@@ -582,9 +587,9 @@ watch(() => props.open, (v) => {
   cursor: pointer;
   width: 100%;
   transition: background 0.2s ease, transform 0.15s ease;
-  box-shadow: 0 4px 16px rgba(204, 0, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(200, 25, 42, 0.3);
 
-  &:hover:not(:disabled) { background: #AA0000; transform: translateY(-1px); }
+  &:hover:not(:disabled) { background: darken(#C8192A, 10%); transform: translateY(-1px); }
   &:disabled { opacity: 0.65; cursor: not-allowed; }
 }
 </style>

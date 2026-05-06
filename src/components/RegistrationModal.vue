@@ -87,7 +87,7 @@ const validators: Record<string, (v: string) => string | null> = {
   apellido: v => v.trim().length < 2 ? 'Ingresa tu apellido' : null,
   email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? null : 'Email inválido',
   phone: () => phoneValid.value ? null : 'Número inválido para el país seleccionado',
-  empresa: v => v.trim().length < 2 ? 'Ingresa el nombre de tu proyecto' : null,
+  empresa: v => v.trim().length < 2 ? 'Ingresa el nombre de tu empresa u organizador' : null,
 }
 
 const validate = () => {
@@ -157,14 +157,14 @@ const handleSubmit = async () => {
     ...getStoredFbParams(),
   }
 
-  console.info('[AleBarreto Registro]', payload)
+  console.info('[MasterCrepes Registro]', payload)
 
   await fetch(import.meta.env.VITE_WEBHOOK_REGISTRO, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       ...payload,
-      source: 'ale-barreto-web',
+      source: 'master-crepes-web',
     }),
   }).catch(() => {})
 
@@ -229,7 +229,7 @@ watch(dropdownOpen, open => {
 
           <!-- ── FORMULARIO ─────────────────────────────────── -->
           <!-- ── FORMULARIO ─────────────────────────────────── -->
-            <p class="rmodal__eyebrow">Asesoría gratuita</p>
+            <p class="rmodal__eyebrow">Cotización de catering gratuita</p>
             <h2 id="rmodal-title" class="rmodal__title">Agenda tu sesión<br><span class="rmodal__title-accent">sin costo</span></h2>
             <p class="rmodal__subtitle">Cupos limitados — completa tus datos y te daremos acceso al video.</p>
 
@@ -361,12 +361,12 @@ watch(dropdownOpen, open => {
 
               <!-- Empresa -->
               <div class="rmodal__field" :class="{ 'has-error': touched.empresa && errors.empresa }">
-                <label for="r-empresa">Nombre de tu proyecto</label>
+                <label for="r-empresa">Empresa u organizador del evento</label>
                 <input
                   id="r-empresa"
                   v-model="form.empresa"
                   type="text"
-                  placeholder="Ej: Remodelación Sala"
+                  placeholder="Ej: Mi empresa, ABC Corp"
                   autocomplete="organization"
                   @blur="onBlur('empresa')"
                 />
@@ -383,7 +383,7 @@ watch(dropdownOpen, open => {
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </template>
-                {{ submitting ? 'Enviando...' : 'AGENDAR MI ASESORÍA' }}
+                {{ submitting ? 'Enviando...' : 'VER EL VIDEO GRATIS' }}
               </button>
 
               <p class="rmodal__legal">

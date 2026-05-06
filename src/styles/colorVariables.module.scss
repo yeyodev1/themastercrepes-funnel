@@ -1,27 +1,32 @@
-// Ale Barreto — Expert in Wood
-$BAKANO-PINK:   #D4A373;   // Wood Pastel (Primary)
-$BAKANO-DARK:   #283618;   // Dark Forest/Earth (Text)
-$BAKANO-LIGHT:  #FEFAE0;   // Cream/Soft Pastel (Backgrounds)
-$BAKANO-PURPLE: #BC6C25;   // Earthy Brown (Secondary)
-$BAKANO-GREEN:  #606C38;   // Sage Green (Accent)
+// Master Crepes — Authentic French Catering & Franchises
+$MC-RED:     #C8192A;   // Master Crepes crimson — CTAs
+$MC-DARK:    #2C1A10;   // Rich dark brown — headings/text
+$MC-GOLD:    #C8963E;   // Warm gold — accents
+$MC-CREAM:   #FFF8F0;   // Warm cream — backgrounds
+$MC-SURFACE: #FFF3E6;   // Warm surface — cards
 
 // Aliases semánticos
-$AB-WOOD:    #D4A373;
-$AB-EARTH:   #BC6C25;
-$AB-FOREST:  #283618;
-$AB-SAGE:    #606C38;
-$AB-CREAM:   #FEFAE0;
-$AB-WHITE:   #ffffff;
+$AB-WOOD:   $MC-GOLD;
+$AB-EARTH:  #8B4513;
+$AB-FOREST: $MC-DARK;
+$AB-SAGE:   $MC-GOLD;
+$AB-CREAM:  $MC-CREAM;
+$AB-WHITE:  #ffffff;
 
-// Color primario
-$BAKANO-PRIMARY: $BAKANO-PINK;
+// Legacy Bakano aliases
+$BAKANO-PINK:    $MC-RED;
+$BAKANO-DARK:    $MC-DARK;
+$BAKANO-LIGHT:   $MC-CREAM;
+$BAKANO-PURPLE:  $MC-GOLD;
+$BAKANO-GREEN:   #8B4513;
+$BAKANO-PRIMARY: $MC-RED;
 
 // Colores base
 $white: #ffffff;
 $text-light: #f5f5f5;
-$overlay-wood: rgba($BAKANO-PINK, 0.1);
+$overlay-wood: rgba($MC-GOLD, 0.1);
 
-// Colores adicionales para UI (Mantenemos la escala de grises para utilidad)
+// Escala de grises UI
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
 $gray-300: #dee2e6;
@@ -32,8 +37,10 @@ $gray-700: #495057;
 $gray-800: #343a40;
 $gray-900: #212529;
 
-// Legacy Aliases (to prevent build errors)
-$OS-RED:   $BAKANO-PINK;
-$OS-NAVY:  $AB-FOREST;
-$OS-BLUE:  $AB-SAGE;
-$OS-DARK:  $AB-FOREST;
+// OS Aliases (usados en SCSS de vistas)
+$OS-RED:     $MC-RED;
+$OS-NAVY:    $MC-DARK;
+$OS-BLUE:    $MC-GOLD;
+$OS-DARK:    $MC-DARK;
+$OS-LIGHT:   $MC-CREAM;
+$OS-SURFACE: $MC-SURFACE;

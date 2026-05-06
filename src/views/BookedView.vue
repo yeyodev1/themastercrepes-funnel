@@ -25,17 +25,17 @@ const nextSteps = [
   {
     icon: 'fa-solid fa-envelope',
     title: 'Revisa tu email',
-    body: 'Te enviamos la confirmación con todos los detalles de tu asesoría de diseño.',
+    body: 'Te enviamos la confirmación con todos los detalles de tu consulta de catering.',
   },
   {
     icon: 'fa-brands fa-whatsapp',
     title: 'Te contactamos por WhatsApp',
-    body: 'Ale Barreto te escribirá para confirmar la cita y conocer un poco más sobre tu idea.',
+    body: 'Alejandro Moreno te escribirá para confirmar la reunión y conocer más sobre tu evento.',
   },
   {
-    icon: 'fa-solid fa-tree',
-    title: 'Prepara tu inspiración',
-    body: 'Ten a mano referencias o ideas de lo que te gustaría lograr en tu espacio.',
+    icon: 'fa-solid fa-utensils',
+    title: 'Prepara los detalles de tu evento',
+    body: 'Ten a mano el número de invitados, fecha y preferencias especiales de menú lograr en tu espacio.',
   },
 ]
 </script>
@@ -45,7 +45,7 @@ const nextSteps = [
 
     <!-- TOP BAR -->
     <header class="booked__topbar">
-      <h2 class="booked__logo-text">ALE BARRETO</h2>
+      <h2 class="booked__logo-text">MASTER CREPES</h2>
     </header>
 
     <main class="booked__main">
@@ -64,7 +64,7 @@ const nextSteps = [
           </template>
         </h1>
         <p class="booked__hero-subtitle">
-          Tu asesoría de diseño con Ale Barreto ha sido agendada correctamente.
+          Tu consulta de catering con Master Crepes ha sido agendada correctamente.
           En breve recibirás todos los detalles.
         </p>
       </section>
@@ -92,10 +92,10 @@ const nextSteps = [
             <i class="fa-solid fa-user-tie"></i>
           </div>
           <div class="booked__team-info">
-            <strong class="booked__team-name">Ale Barreto</strong>
-            <span class="booked__team-role">Experta en Diseño y Construcción en Madera</span>
+            <strong class="booked__team-name">Alejandro Moreno</strong>
+            <span class="booked__team-role">Fundador y Chef Ejecutivo — Master Crepes</span>
             <p class="booked__team-note">
-              "La madera no es solo un material — es el alma de un espacio que cuenta una historia."
+              "Cada evento merece una experiencia gastronómica que sus invitados recuerden siempre."
             </p>
           </div>
         </div>
@@ -114,7 +114,7 @@ const nextSteps = [
         <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
         <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
       </nav>
-      <p class="booked__footer-copy">© {{ new Date().getFullYear() }} ALE BARRETO. Todos los derechos reservados.</p>
+      <p class="booked__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.</p>
     </footer>
 
   </div>

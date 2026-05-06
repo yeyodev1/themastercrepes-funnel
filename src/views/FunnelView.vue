@@ -3,7 +3,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import RegistrationModal from '@/components/RegistrationModal.vue'
 import { captureFbParams } from '@/utils/fbclid'
-import alePhoto from '@/assets/team/ale-barreto.png'
 
 const router = useRouter()
 const modalOpen = ref(false)
@@ -22,47 +21,47 @@ const openModal = () => {
 
 const stats = [
   {
-    icon: 'fa-solid fa-tree',
-    number: '15+',
-    text: 'Años trabajando con maderas nobles y certificadas',
+    icon: 'fa-solid fa-utensils',
+    number: '8+',
+    text: 'Años ofreciendo catering premium en eventos de alto nivel',
   },
   {
-    icon: 'fa-solid fa-house-chimney',
+    icon: 'fa-solid fa-star',
     number: '500+',
-    text: 'Proyectos residenciales y comerciales entregados',
+    text: 'Eventos exitosos: corporativos, bodas y celebraciones',
   },
   {
-    icon: 'fa-solid fa-award',
-    number: '100%',
-    text: 'Compromiso con la calidad artesanal y diseño premium',
+    icon: 'fa-solid fa-heart',
+    number: '98%',
+    text: 'De los clientes repetiría el catering con Master Crepes',
   },
 ]
 
 const pillars = [
-  'Sin materiales de baja calidad que se deterioran rápido',
-  'Sin diseños genéricos que no aprovechan tu espacio',
-  'Sin retrasos en la entrega de tu proyecto',
-  'Con maderas seleccionadas y procesos de secado óptimos',
+  'Sin catering aburrido que desanima a los invitados',
+  'Sin proveedores que fallan el día del evento',
+  'Sin menús genéricos que no impresionan a nadie',
+  'Con crepes francesas elaboradas al momento frente a tus invitados',
 ]
 
 const methodology = [
   {
     num: '01',
-    icon: 'fa-solid fa-pencil-ruler',
-    title: 'Diseño Conceptual y 3D',
-    body: 'Visualizamos tu proyecto antes de cortar la primera pieza. Planificación al detalle para resultados perfectos.',
+    icon: 'fa-solid fa-clipboard-list',
+    title: 'Diseño del Menú Personalizado',
+    body: 'Creamos el menú perfecto para tu evento según el tipo de celebración, número de invitados y preferencias.',
   },
   {
     num: '02',
-    icon: 'fa-solid fa-hammer',
-    title: 'Fabricación Artesanal',
-    body: 'Cada pieza es tratada por manos expertas, utilizando técnicas tradicionales y tecnología de punta.',
+    icon: 'fa-solid fa-truck',
+    title: 'Logística y Coordinación',
+    body: 'Nos encargamos de todo: instalación, equipo, ingredientes y personal para que tú no te preocupes por nada.',
   },
   {
     num: '03',
-    icon: 'fa-solid fa-truck-ramp-box',
-    title: 'Instalación y Acabado',
-    body: 'Nos encargamos de todo el proceso hasta que el último detalle esté en su lugar, con limpieza y precisión.',
+    icon: 'fa-solid fa-fire-burner',
+    title: 'Servicio en Vivo el Día del Evento',
+    body: 'Nuestros crepe-makers elaboran las crepes al momento frente a tus invitados, creando una experiencia única.',
   },
 ]
 
@@ -92,7 +91,7 @@ onUnmounted(() => clearInterval(interval))
 
     <!-- TOP BAR -->
     <header class="funnel__topbar">
-      <h2 class="funnel__logo-text">ALE BARRETO</h2>
+      <h2 class="funnel__logo-text">MASTER CREPES</h2>
     </header>
 
     <!-- URGENCY BANNER -->
@@ -113,14 +112,13 @@ onUnmounted(() => clearInterval(interval))
       <div class="funnel__container">
 
         <p class="funnel__eyebrow">
-          <i class="fa-solid fa-tree" aria-hidden="true"></i>
-          Expertos en Madera y Diseño de Interiores
+          <i class="fa-solid fa-utensils" aria-hidden="true"></i>
+          Catering Premium de Crepes Francesas
         </p>
 
         <h1 id="funnel-headline" class="funnel__headline">
-          Transforma tu hogar con la
-          <span class="funnel__headline-accent">calidez y elegancia de la madera</span>
-          de alta gama
+          Convierte tu evento en una experiencia gastronómica
+          <span class="funnel__headline-accent">que tus invitados nunca olvidarán</span>
         </h1>
 
         <ul class="funnel__pillars" role="list">
@@ -134,14 +132,14 @@ onUnmounted(() => clearInterval(interval))
         <div class="funnel__vsl-wrap">
           <div class="funnel__vsl" @click="openModal()" role="button" aria-label="Ver video" tabindex="0">
             <div class="funnel__vsl-bg">
-              <img src="https://fast.wistia.com/embed/medias/5ql8l131me/swatch" class="funnel__vsl-thumb" alt="Vista previa video" />
+              <img src="https://fast.wistia.com/embed/medias/88xzla80cy/swatch" class="funnel__vsl-thumb" alt="Vista previa video" />
               <div class="funnel__vsl-blur-overlay"></div>
             </div>
             <div class="funnel__vsl-overlay">
               <div class="funnel__vsl-play">
                 <i class="fa-solid fa-play" aria-hidden="true"></i>
               </div>
-              <p class="funnel__vsl-caption">Mira el video exclusivo y descubre cómo transformamos tus espacios con madera de alta gama</p>
+              <p class="funnel__vsl-caption">Descubre cómo Alejandro Moreno transforma eventos ordinarios en experiencias gastronómicas extraordinarias</p>
             </div>
           </div>
         </div>
@@ -150,7 +148,7 @@ onUnmounted(() => clearInterval(interval))
         <div class="funnel__cta-wrap">
           <button class="funnel__cta-btn" @click="openModal()">
             <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
-            AGENDAR ASESORÍA GRATUITA
+            SOLICITAR COTIZACIÓN GRATUITA
           </button>
           <p class="funnel__cta-sub">
             <i class="fa-solid fa-lock" aria-hidden="true"></i>
@@ -164,7 +162,7 @@ onUnmounted(() => clearInterval(interval))
     <!-- STATS -->
     <section class="funnel__stats" aria-label="Resultados comprobados">
       <div class="funnel__container">
-        <p class="funnel__section-label funnel__section-label--light">Resultados reales — clientes reales</p>
+        <p class="funnel__section-label funnel__section-label--light">Resultados reales — eventos reales</p>
         <div class="funnel__stats-grid">
           <div v-for="stat in stats" :key="stat.number" class="funnel__stat">
             <div class="funnel__stat-icon" aria-hidden="true">
@@ -182,28 +180,28 @@ onUnmounted(() => clearInterval(interval))
       <div class="funnel__container">
         <p class="funnel__section-label">¿Te identificas con esto?</p>
         <h2 id="problem-heading" class="funnel__section-title">
-          El error que cometen la mayoría de operadores
+          Lo que arruina los eventos más importantes
         </h2>
         <div class="funnel__problem-grid">
           <div class="funnel__problem-item">
             <i class="fa-solid fa-triangle-exclamation funnel__problem-icon" aria-hidden="true"></i>
             <div>
-              <strong>Usan maderas sin tratar</strong>
-              <p>El uso de madera "verde" o sin el secado adecuado provoca torceduras y grietas a los pocos meses de instalación.</p>
+              <strong>Catering genérico y sin personalidad</strong>
+              <p>Bufés aburridos que nadie recuerda al día siguiente y que no reflejan la importancia del evento.</p>
             </div>
           </div>
           <div class="funnel__problem-item">
             <i class="fa-solid fa-triangle-exclamation funnel__problem-icon" aria-hidden="true"></i>
             <div>
-              <strong>Diseños poco funcionales</strong>
-              <p>Muebles que se ven bien pero no aprovechan el espacio o no resisten el uso diario en el hogar u oficina.</p>
+              <strong>Proveedores que fallan en el momento clave</strong>
+              <p>Comida fría, llegada tarde o personal sin profesionalismo que arruina la reputación del anfitrión.</p>
             </div>
           </div>
           <div class="funnel__problem-item">
             <i class="fa-solid fa-triangle-exclamation funnel__problem-icon" aria-hidden="true"></i>
             <div>
-              <strong>Acabados de baja calidad</strong>
-              <p>Barnices y selladores que se pelan o pierden su brillo rápido, obligando a mantenimientos costosos y frecuentes.</p>
+              <strong>Sin el WOW factor que todo evento necesita</strong>
+              <p>Cuando el catering no genera conversación ni fotos, el evento se vuelve uno más del montón.</p>
             </div>
           </div>
         </div>
@@ -213,9 +211,9 @@ onUnmounted(() => clearInterval(interval))
     <!-- METODOLOGÍA -->
     <section class="funnel__method" aria-labelledby="method-heading">
       <div class="funnel__container">
-        <p class="funnel__section-label">Nuestra metodología de asesoría</p>
+        <p class="funnel__section-label">Nuestra metodología de catering</p>
         <h2 id="method-heading" class="funnel__section-title">
-          Tres pilares que protegen tu operación
+          Tres pasos para un evento perfecto
         </h2>
         <div class="funnel__method-grid">
           <div v-for="m in methodology" :key="m.num" class="funnel__method-card">
@@ -237,43 +235,45 @@ onUnmounted(() => clearInterval(interval))
         <div class="funnel__testimonial-card">
           <i class="fa-solid fa-quote-left funnel__testimonial-quote" aria-hidden="true"></i>
           <blockquote class="funnel__testimonial-text">
-            "Ale logró captar exactamente lo que queríamos para nuestra oficina. 
-            La calidez de la madera y la precisión de los acabados han transformado por completo el ambiente de trabajo."
+            "El catering de Master Crepes fue el alma de nuestra fiesta corporativa.
+            Ver cómo preparaban las crepes en vivo fue el momento favorito de todos.
+            Alejandro y su equipo superaron todas nuestras expectativas."
           </blockquote>
           <footer class="funnel__testimonial-author">
             <div class="funnel__testimonial-avatar" aria-hidden="true">
               <i class="fa-solid fa-user"></i>
             </div>
             <div>
-              <strong>Directora de Diseño</strong>
-              <span>Estudio Arquitectónico Independiente</span>
+              <strong>Gerente de Recursos Humanos</strong>
+              <span>Empresa multinacional — Evento corporativo 200 personas</span>
             </div>
           </footer>
         </div>
       </div>
     </section>
 
-    <!-- AUTHORITY — Ale Barreto -->
+    <!-- AUTHORITY — Alejandro Moreno -->
     <section class="funnel__authority" aria-labelledby="authority-heading">
       <div class="funnel__container funnel__authority-inner">
         <div class="funnel__authority-photo-wrap">
           <div class="funnel__authority-avatar" aria-hidden="true">
-            <img :src="alePhoto" alt="Ale Barreto" class="funnel__authority-img" />
+            <i class="fa-solid fa-utensils"></i>
           </div>
         </div>
         <div class="funnel__authority-content">
-          <p class="funnel__authority-eyebrow">Tu especialista asignada</p>
-          <h2 id="authority-heading" class="funnel__authority-name">Ale Barreto</h2>
-          <p class="funnel__authority-role">Experta en Diseño y Construcción en Madera</p>
+          <p class="funnel__authority-eyebrow">Tu especialista en catering</p>
+          <h2 id="authority-heading" class="funnel__authority-name">Alejandro Moreno</h2>
+          <p class="funnel__authority-role">Fundador y Chef Ejecutivo — Master Crepes</p>
           <p class="funnel__authority-bio">
-            Con años de experiencia en el mercado ecuatoriano, me especializo en crear
-            espacios que combinan la nobleza de la madera con diseños modernos y funcionales.
-            Mi objetivo es que cada proyecto sea una inversión que dure toda la vida.
+            Con más de 8 años de experiencia en catering premium, Alejandro Moreno es el referente
+            de las crepes francesas auténticas para eventos de alto nivel. Ha transformado cientos
+            de celebraciones corporativas, bodas y galas en experiencias gastronómicas memorables
+            que sus clientes recuerdan por años.
           </p>
           <ul class="funnel__authority-creds" role="list">
-            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Especialista en maderas nobles y tratadas</li>
-            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Diseños exclusivos a medida</li>
-            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Gestión integral: del plano a la instalación</li>
+            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Especialista en crepes francesas auténticas</li>
+            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Catering para eventos corporativos y bodas</li>
+            <li><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Servicio en vivo: experiencia visual y gastronómica</li>
           </ul>
         </div>
       </div>
@@ -283,15 +283,15 @@ onUnmounted(() => clearInterval(interval))
     <section class="funnel__cta-final" aria-labelledby="cta-final-heading">
       <div class="funnel__container">
         <h2 id="cta-final-heading" class="funnel__cta-final-title">
-          ¿Listo para iniciar tu proyecto?
+          ¿Tu evento merece lo mejor?
         </h2>
         <p class="funnel__cta-final-sub">
-          Agenda una asesoría gratuita de 15 minutos. Conversaremos sobre tu idea,
-          el espacio disponible y te daremos una primera visión técnica y estética.
+          Solicita una cotización gratuita y personalizada. Conversaremos sobre tu evento,
+          el número de invitados y diseñaremos el menú perfecto para ti.
         </p>
         <button class="funnel__cta-btn" @click="openModal()">
           <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
-          AGENDAR CONSULTA TÉCNICA GRATIS
+          SOLICITAR COTIZACIÓN GRATUITA
         </button>
         <p class="funnel__cta-sub">
           <i class="fa-solid fa-lock" aria-hidden="true"></i>
@@ -303,13 +303,13 @@ onUnmounted(() => clearInterval(interval))
     <!-- FOOTER -->
     <footer class="funnel__footer">
       <div class="funnel__container funnel__footer-inner">
-        <h2 class="funnel__footer-logo-text">ALE BARRETO</h2>
+        <h2 class="funnel__footer-logo-text">MASTER CREPES</h2>
         <nav class="funnel__footer-links" aria-label="Legal">
           <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
           <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
         </nav>
         <p class="funnel__footer-copy">
-          © {{ new Date().getFullYear() }} ALE BARRETO. Todos los derechos reservados.
+          © {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.
         </p>
       </div>
     </footer>
@@ -340,7 +340,7 @@ onUnmounted(() => clearInterval(interval))
 // ── Top bar ──────────────────────────────────────────────────────────────────
 .funnel__topbar {
   background: #ffffff;
-  border-bottom: 1px solid #E8EDF5;
+  border-bottom: 1px solid #E8DDD0;
   padding: 0.9rem 1.5rem;
   display: flex;
   justify-content: center;
@@ -350,10 +350,13 @@ onUnmounted(() => clearInterval(interval))
   box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
 }
 
-.funnel__logo {
-  height: 38px;
-  width: auto;
-  object-fit: contain;
+.funnel__logo-text {
+  font-family: fonts.$font-accent;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: colors.$OS-DARK;
+  letter-spacing: 0.04em;
+  margin: 0;
 }
 
 // ── Urgency banner ───────────────────────────────────────────────────────────
@@ -405,7 +408,7 @@ onUnmounted(() => clearInterval(interval))
 // ── Hero ─────────────────────────────────────────────────────────────────────
 .funnel__hero {
   padding: 3.5rem 0 3rem;
-  background: linear-gradient(180deg, #EEF4FF 0%, #ffffff 70%);
+  background: linear-gradient(180deg, #FFF5EE 0%, #ffffff 70%);
 }
 
 .funnel__eyebrow {
@@ -484,13 +487,13 @@ onUnmounted(() => clearInterval(interval))
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  border: 2px solid #D8E6F5;
-  box-shadow: 0 8px 40px rgba(0, 63, 125, 0.12);
+  border: 2px solid rgba(colors.$MC-GOLD, 0.3);
+  box-shadow: 0 8px 40px rgba(44, 26, 16, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 48px rgba(0, 63, 125, 0.2);
+    box-shadow: 0 16px 48px rgba(44, 26, 16, 0.2);
   }
   &:focus-visible {
     outline: 3px solid colors.$OS-BLUE;
@@ -514,8 +517,8 @@ onUnmounted(() => clearInterval(interval))
   height: 100%;
   object-fit: cover;
   filter: blur(8px) brightness(0.6);
-  transform: scale(1.1); // Avoid white edges from blur
-  transition: filter 0.4s ease, transform 0.4s ease, brightness 0.4s ease;
+  transform: scale(1.1);
+  transition: filter 0.4s ease, transform 0.4s ease;
 
   .funnel__vsl:hover & {
     filter: blur(4px) brightness(0.75);
@@ -528,15 +531,6 @@ onUnmounted(() => clearInterval(interval))
   inset: 0;
   background: radial-gradient(circle at center, rgba(colors.$OS-NAVY, 0.2) 0%, rgba(colors.$OS-NAVY, 0.6) 100%);
   z-index: 1;
-}
-
-.funnel__vsl-watermark {
-  position: relative;
-  z-index: 2;
-  height: 60px;
-  width: auto;
-  opacity: 0.15;
-  filter: brightness(0) invert(1);
 }
 
 .funnel__vsl-overlay {
@@ -605,12 +599,12 @@ onUnmounted(() => clearInterval(interval))
   width: 100%;
   max-width: 480px;
   transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 20px rgba(204, 0, 0, 0.35);
+  box-shadow: 0 4px 20px rgba(200, 25, 42, 0.35);
 
   &:hover {
-    background: #AA0000;
+    background: darken(#C8192A, 10%);
     transform: translateY(-1px);
-    box-shadow: 0 8px 28px rgba(204, 0, 0, 0.45);
+    box-shadow: 0 8px 28px rgba(200, 25, 42, 0.45);
   }
   &:active { transform: translateY(0); }
 }
@@ -705,8 +699,8 @@ onUnmounted(() => clearInterval(interval))
   gap: 1rem;
   align-items: flex-start;
   padding: 1.25rem;
-  background: #F9FBFF;
-  border: 1px solid #E4EDF7;
+  background: #FFFAF5;
+  border: 1px solid #EEE0D0;
   border-radius: 12px;
 
   strong {
@@ -734,7 +728,7 @@ onUnmounted(() => clearInterval(interval))
 // ── Methodology ──────────────────────────────────────────────────────────────
 .funnel__method {
   padding: 4rem 0;
-  background: #F5F8FF;
+  background: #FFF8F0;
 }
 
 .funnel__method-grid {
@@ -746,11 +740,11 @@ onUnmounted(() => clearInterval(interval))
 
 .funnel__method-card {
   background: #ffffff;
-  border: 1px solid #E4EDF7;
+  border: 1px solid #EEE0D0;
   border-radius: 16px;
   padding: 1.75rem 1.5rem;
   position: relative;
-  box-shadow: 0 2px 12px rgba(0, 63, 125, 0.05);
+  box-shadow: 0 2px 12px rgba(44, 26, 16, 0.05);
 }
 
 .funnel__method-num {
@@ -797,14 +791,14 @@ onUnmounted(() => clearInterval(interval))
 }
 
 .funnel__testimonial-card {
-  background: #F5F8FF;
+  background: #FFF8F0;
   border: 1px solid rgba(colors.$OS-NAVY, 0.1);
-  border-left: 4px solid colors.$OS-NAVY;
+  border-left: 4px solid colors.$OS-RED;
   border-radius: 16px;
   padding: 2rem;
   max-width: 720px;
   margin: 0 auto;
-  box-shadow: 0 4px 24px rgba(0, 63, 125, 0.07);
+  box-shadow: 0 4px 24px rgba(44, 26, 16, 0.07);
 }
 
 .funnel__testimonial-quote {
@@ -847,9 +841,9 @@ onUnmounted(() => clearInterval(interval))
 // ── Authority ────────────────────────────────────────────────────────────────
 .funnel__authority {
   padding: 4rem 0;
-  background: linear-gradient(135deg, #EEF4FF 0%, #F9FBFF 100%);
-  border-top: 1px solid #E4EDF7;
-  border-bottom: 1px solid #E4EDF7;
+  background: linear-gradient(135deg, #FFF5EE 0%, #FFF8F0 100%);
+  border-top: 1px solid #EEE0D0;
+  border-bottom: 1px solid #EEE0D0;
 }
 
 .funnel__authority-inner {
@@ -870,8 +864,9 @@ onUnmounted(() => clearInterval(interval))
   align-items: center;
   justify-content: center;
   border: 4px solid #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 63, 125, 0.2);
+  box-shadow: 0 4px 20px rgba(44, 26, 16, 0.2);
   overflow: hidden;
+  i { color: rgba(#ffffff, 0.85); font-size: 2.5rem; }
 }
 
 .funnel__authority-img {
@@ -943,8 +938,8 @@ onUnmounted(() => clearInterval(interval))
   .funnel__cta-btn {
     margin: 0 auto 1rem;
     background: colors.$OS-RED;
-    box-shadow: 0 4px 24px rgba(204, 0, 0, 0.4);
-    &:hover { background: #AA0000; }
+    box-shadow: 0 4px 24px rgba(200, 25, 42, 0.4);
+    &:hover { background: darken(#C8192A, 10%); }
   }
 
   .funnel__cta-sub { color: rgba(#ffffff, 0.5); }
@@ -980,12 +975,13 @@ onUnmounted(() => clearInterval(interval))
   text-align: center;
 }
 
-.funnel__footer-logo {
-  height: 30px;
-  width: auto;
-  filter: brightness(100);
-  opacity: 0.6;
-  object-fit: contain;
+.funnel__footer-logo-text {
+  font-family: fonts.$font-accent;
+  font-size: 1rem;
+  font-weight: 800;
+  color: rgba(#ffffff, 0.6);
+  letter-spacing: 0.06em;
+  margin: 0;
 }
 
 .funnel__footer-links {

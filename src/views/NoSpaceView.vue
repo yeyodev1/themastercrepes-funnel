@@ -20,7 +20,7 @@ onMounted(() => {
 
     <!-- TOP BAR -->
     <header class="nospace__topbar">
-      <h2 class="nospace__logo-text">ALE BARRETO</h2>
+      <h2 class="nospace__logo-text">MASTER CREPES</h2>
     </header>
 
     <main class="nospace__main">
@@ -37,10 +37,10 @@ onMounted(() => {
         <div class="nospace__icon-wrap" aria-hidden="true">
           <i class="fa-solid fa-calendar-xmark nospace__icon"></i>
         </div>
-        <h1 class="nospace__title">Sin cupos disponibles en este momento</h1>
+        <h1 class="nospace__title">Tu presupuesto actual no aplica para nuestro catering</h1>
         <p class="nospace__subtitle">
-          Trabajamos con un número limitado de proyectos para garantizar una asesoría de calidad.
-          En este momento nuestros cupos de asesoría de diseño están completos.
+          Nuestro servicio de catering premium requiere un presupuesto mínimo de $500 para garantizar
+          la calidad y experiencia que merecen tus invitados. Cuando tengas el presupuesto, con gusto te atendemos.
         </p>
       </div>
 
@@ -53,8 +53,8 @@ onMounted(() => {
               <i class="fa-solid fa-envelope"></i>
             </div>
             <div>
-              <strong>Revisa tu email</strong>
-              <p>Te notificaremos cuando se libere un espacio en la agenda de Ale Barreto.</p>
+              <strong>Guarda nuestro contacto</strong>
+              <p>Cuando tu presupuesto esté listo, escríbenos y con gusto te preparamos una propuesta.</p>
             </div>
           </li>
           <li>
@@ -62,8 +62,8 @@ onMounted(() => {
               <i class="fa-brands fa-whatsapp"></i>
             </div>
             <div>
-              <strong>Proyecto urgente</strong>
-              <p>Si tu proyecto necesita atención inmediata, contáctanos por WhatsApp y evaluaremos tu caso.</p>
+              <strong>Recomiéndanos</strong>
+              <p>Si conoces a alguien que organice eventos con presupuesto mayor a $500, comparte Master Crepes con ellos.</p>
             </div>
           </li>
         </ul>
@@ -77,7 +77,7 @@ onMounted(() => {
         </div>
         <h2 class="nospace__teaser-title">Guía de Diseño y Selección de Madera</h2>
         <p class="nospace__teaser-body">
-          Estamos preparando una guía completa para ayudarte a seleccionar el tipo de madera ideal
+          Estamos preparando contenido exclusivo sobre cómo organizar eventos gastronómicos memorables
           según tu tipo de espacio y estilo — sin necesidad de llamar a un especialista.
         </p>
       </div>
@@ -96,7 +96,7 @@ onMounted(() => {
         <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
         <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
       </nav>
-      <p class="nospace__footer-copy">© {{ new Date().getFullYear() }} ALE BARRETO. Todos los derechos reservados.</p>
+      <p class="nospace__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.</p>
     </footer>
 
   </div>

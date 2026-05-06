@@ -5,8 +5,8 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const iframeHeight = ref(1100)
 
-// GHL Ale Barreto Calendar URL
-const BASE_URL = 'https://api.leadconnectorhq.com/widget/booking/nCzBqHMNFYGu4rYBREX3'
+// GHL Master Crepes Calendar URL
+const BASE_URL = 'https://api.leadconnectorhq.com/widget/booking/Z1ns7GVYFb52RH0jBtzP'
 
 const calendarUrl = computed(() => {
   try {
@@ -55,7 +55,7 @@ onUnmounted(() => window.removeEventListener('message', onMessage))
 
     <!-- TOP BAR -->
     <header class="booking__topbar">
-      <h2 class="booking__logo-text">ALE BARRETO</h2>
+      <h2 class="booking__logo-text">MASTER CREPES</h2>
     </header>
 
     <main class="booking__main">
@@ -88,7 +88,7 @@ onUnmounted(() => window.removeEventListener('message', onMessage))
           <span class="booking__title-accent">asesoría de diseño</span>
         </h1>
         <p class="booking__subtitle">
-          Una sesión de 15 minutos con Ale Barreto para conversar sobre tu proyecto y definir los siguientes pasos.
+          Una sesión con Alejandro Moreno para conversar sobre tu evento y diseñar la propuesta de catering perfecta.
         </p>
       </section>
 
@@ -97,11 +97,11 @@ onUnmounted(() => window.removeEventListener('message', onMessage))
         <iframe
           :src="calendarUrl"
           :style="{ height: iframeHeight + 'px' }"
-          title="Agenda tu asesoría con Ale Barreto"
+          title="Agenda tu consulta con Master Crepes"
           class="calendar__iframe"
           frameborder="0"
           scrolling="no"
-          id="nCzBqHMNFYGu4rYBREX3_1776870418706"
+          id="Z1ns7GVYFb52RH0jBtzP_1776870418706"
         ></iframe>
       </div>
 
@@ -113,7 +113,7 @@ onUnmounted(() => window.removeEventListener('message', onMessage))
         <RouterLink to="/politicas-privacidad">Política de Privacidad</RouterLink>
         <RouterLink to="/aviso-legal">Aviso Legal</RouterLink>
       </nav>
-      <p class="booking__footer-copy">© {{ new Date().getFullYear() }} ALE BARRETO. Todos los derechos reservados.</p>
+      <p class="booking__footer-copy">© {{ new Date().getFullYear() }} MASTER CREPES. Todos los derechos reservados.</p>
     </footer>
 
   </div>
